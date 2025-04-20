@@ -1,3 +1,6 @@
+# Explicitly include quote-app folder (unignore it)
+!quote-app/
+
 # Node (Angular)
 quote-app/node_modules/
 quote-app/dist/
@@ -34,4 +37,3 @@ quote-backend/.pytest_cache/
 # Coverage reports
 htmlcov/
 coverage.xml
-
