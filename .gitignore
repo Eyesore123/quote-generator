@@ -34,3 +34,4 @@ quote-backend/.pytest_cache/
 # Coverage reports
 htmlcov/
 coverage.xml
+
