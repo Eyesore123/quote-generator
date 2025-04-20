@@ -4,7 +4,7 @@ import random
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, origins="*")
 
 quotes = {
     "philosophy": [
