@@ -1,0 +1,36 @@
+# Node (Angular)
+quote-app/node_modules/
+quote-app/dist/
+quote-app/.angular/
+quote-app/.env
+quote-app/.DS_Store
+
+# Python (Flask)
+quote-backend/venv/
+quote-backend/__pycache__/
+quote-backend/instance/
+quote-backend/.env
+quote-backend/.DS_Store
+
+# VSCode
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment / credentials
+.env
+
+# Pytest cache
+quote-backend/.pytest_cache/
+
+# PyCharm / JetBrains
+.idea/
+
+# Coverage reports
+htmlcov/
+coverage.xml
