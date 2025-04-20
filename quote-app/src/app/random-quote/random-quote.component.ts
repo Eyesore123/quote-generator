@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './random-quote.component.css'
 })
 export class RandomQuoteComponent {
-
+  randomQuote: string = 'This is a random quote!!!';
 }
