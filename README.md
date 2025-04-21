@@ -1,6 +1,6 @@
 ### Quote Generator
 
-This is my first Angular project. And my first Python project if pygame tutorials. I don't know why I'm calling it Quote Generator, I guess I couldn't come up with a better name. Basically Angular frontend shows quotes that are served from Python backend (Flask).
+This is my first Angular project. And my first Python project if pygame tutorials do not count (lol). I don't know why I'm calling it Quote Generator, I guess I couldn't come up with a better name. Basically Angular frontend shows quotes that are served from Python backend (Flask).
 
 I will probably try adding new functionalities using Flask, possibly use some public API for quote fetching etc. And I'll improve the styles as I go.
 
