@@ -13,11 +13,15 @@ export interface Quote {
 })
 export class QuoteService {
   private apiUrl = 'http://127.0.0.1:5000';
-
+  
   constructor(private http: HttpClient) {}
-
+  
   getQuoteByCategory(category: string): Observable<{ quote: Quote }> {
     return this.http.get<{ quote: Quote }>(`${this.apiUrl}/quote/${category}`);
+  }
+  
+  getRandomQuoteFromAllCategories(): Observable<{ quote: Quote }> {
+    return this.http.get<{ quote: Quote }>(`${this.apiUrl}/quote/all`);
   }
   
   getAllQuotes(): Observable<Quote[]> {

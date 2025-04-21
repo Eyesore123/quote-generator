@@ -31,7 +31,7 @@ export class RandomQuoteComponent implements OnInit {
   }
 
   loadQuote(): void {
-    this.quoteService.getQuoteByCategory('random').subscribe(res => {
+    this.quoteService.getRandomQuoteFromAllCategories().subscribe(res => {
       this.quote = res.quote;
     });
   }

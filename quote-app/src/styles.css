@@ -1,4 +1,3 @@
-/* Updated CSS that preserves full-width navigation */
 html, body {
     margin: 0;
     padding: 0;
@@ -48,11 +47,11 @@ main {
 .quote-container, .quote-list {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Change from center to flex-start */
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     max-width: 600px;
-    margin: 20px auto; /* Reduce from 100px to 20px */
+    margin: 20px auto;
 }
 
   

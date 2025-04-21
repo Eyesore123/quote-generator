@@ -47,8 +47,13 @@ quotes = {
 
 @app.route('/quote/<category>')
 def get_route(category):
-    category_quotes = quotes.get(category, quotes["random"])
-    return jsonify({"quote": random.choice(category_quotes)})
+    if category == "all":
+        all_quotes = [q for quotes_list in quotes.values() for q in quotes_list]
+        return jsonify({"quote": random.choice(all_quotes)})
+    else:
+        category_quotes = quotes.get(category, quotes["random"])
+        return jsonify({"quote": random.choice(category_quotes)})
+
 
 @app.route('/quotes')
 def get_all_quotes():
