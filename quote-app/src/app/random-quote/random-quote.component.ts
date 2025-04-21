@@ -7,9 +7,11 @@ import { QuoteService } from '../quote.service';
   standalone: true,
   imports: [NgIf],
   template: `
-    <div *ngIf="quote">
+    <div *ngIf="quote" class="quote-container">
       <blockquote>{{ quote }}</blockquote>
-      <button (click)="loadQuote()">New Quote</button>
+      <p>
+        <button (click)="loadQuote()">New Quote</button>
+      </p>
     </div>
   `,
   styleUrls: ['./random-quote.component.css']
