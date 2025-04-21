@@ -1,5 +1,20 @@
+
+
 <!-- <p>quote-list works!</p> -->
 
 <div class="quote-list">
     <h2>Quotes</h2>
-</div>
+    <div *ngFor="let quote of paginatedQuotes" class="quote-item">
+      <blockquote>"{{ quote.quote }}"</blockquote>
+      <p>— {{ quote.author }} 
+        <!-- <span class="category">({{ quote.category }})</span> -->
+    </p>
+    </div>
+  
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= quotes.length">Next</button>
+    </div>
+  </div>
+  

@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { QuoteService } from '../quote.service';
-import { Quote } from '../random-quote/random-quote.component';
+import { Quote } from '../quote.service';
 
 @Component({
   selector: 'app-quote-list',
-  imports: [],
-  templateUrl: './quote-list.component.html',
-  styleUrl: './quote-list.component.css',
   standalone: true,
+  imports: [CommonModule],
+  providers: [QuoteService],
+  templateUrl: './quote-list.component.html',
+  styleUrls: ['./quote-list.component.css'],
 })
 export class QuoteListComponent implements OnInit {
   quotes: Quote[] = [];
   currentPage = 1;
-  quotesPerPage = 10;
+  quotesPerPage = 5;
 
   constructor(private quoteService: QuoteService) {}
 
@@ -23,8 +25,8 @@ export class QuoteListComponent implements OnInit {
   }
 
   get paginatedQuotes(): Quote[] {
-    const startIndex = (this.currentPage - 1) * this.quotesPerPage;
-    return this.quotes.slice(startIndex, startIndex + this.quotesPerPage);
+    const start = (this.currentPage - 1) * this.quotesPerPage;
+    return this.quotes.slice(start, start + this.quotesPerPage);
   }
 
   nextPage(): void {
@@ -33,7 +35,7 @@ export class QuoteListComponent implements OnInit {
     }
   }
 
-  previousPage(): void {
+  prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
     }

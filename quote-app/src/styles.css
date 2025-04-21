@@ -1,18 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+/* Updated CSS that preserves full-width navigation */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-  }
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
 
-main {
-    width: 100vw;
-    height: 80vh;
+app-root {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    width: 100%;
+    align-self: stretch; /* Ensures nav takes full width */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
     justify-content: center;
-  }
+    width: 100%;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 1200px;
+}
+
+.quote-container, .quote-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Change from center to flex-start */
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto; /* Reduce from 100px to 20px */
+}
+
   
   p, .blockquote, h1, h2, h3, h4, h5, h6 {
     display: flex;
@@ -25,12 +67,70 @@ h1 {
     margin-bottom: 100px;
 }
 
-.quote-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin-bottom: 100px;
+div.quote-item {
+    margin: 20px 0;
 }
+
+span {
+    margin: 0 30px;
+}
+
+  
+  nav li {
+    display: inline;
+    margin: 0 40px;
+  }
+  
+  @media (max-width: 768px) {
+    nav li {
+      margin: 0 10px;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1200px) {
+    nav li {
+      margin: 0 25px;
+    }
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+  
+  nav a.active {
+    background-color: #555;
+    border-radius: 5px;
+  }
+
+/* Test styles: */
+
+  
+  .quote-item {
+    margin-bottom: 3rem;
+    padding: 1rem;
+    border-left: 3px solid #333;
+    background: #f9f9f9;
+    animation: fadeIn 0.5s ease-in;
+    width: 600px
+  }
+
+  .category {
+    font-size: 0.85em;
+    color: #666;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
