@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { QuoteService } from '../quote.service';
+export interface Quote {
+  quote: string;
+  author: string;
+}
 
 @Component({
   selector: 'app-random-quote',
@@ -8,7 +12,8 @@ import { QuoteService } from '../quote.service';
   imports: [NgIf],
   template: `
     <div *ngIf="quote" class="quote-container">
-      <blockquote>{{ quote }}</blockquote>
+      <blockquote>{{ quote.quote }}</blockquote>
+      <p>— {{ quote.author }}</p>
       <p>
         <button (click)="loadQuote()">New Quote</button>
       </p>
@@ -17,7 +22,7 @@ import { QuoteService } from '../quote.service';
   styleUrls: ['./random-quote.component.css']
 })
 export class RandomQuoteComponent implements OnInit {
-  quote: string | undefined;
+  quote: Quote | undefined;
 
   constructor(private quoteService: QuoteService) {}
 
