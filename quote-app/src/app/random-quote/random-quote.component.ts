@@ -15,7 +15,7 @@ export interface Quote {
       <blockquote>{{ quote.quote }}</blockquote>
       <p>— {{ quote.author }}</p>
       <p>
-        <button (click)="loadQuote()">New Quote</button>
+        <button style="margin-top: 20px;" (click)="loadQuote()">New Quote</button>
       </p>
     </div>
   `,
