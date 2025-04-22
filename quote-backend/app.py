@@ -399,5 +399,23 @@ if __name__ == '__main__':
 
 # Route for subscribing to a quote via form
 
-# @app.route('/subscribe', methods=['POST'])
-# def subscribe():
+@app.route('/subscribe', methods=['POST'])
+def subscribe():
+    email = request.form['email']
+    if email not in subscribers:
+        subscribers.append(email)
+        return jsonify({"message": "You have been subscribed!"})
+    else:
+        return jsonify({"message": "You are already subscribed!"})
+    
+
+# Route for unsubscribing from a quote via form
+
+@app.route('/unsubscribe', methods=['POST'])
+def unsubscribe():
+    email = request.form['email']
+    if email in subscribers:
+        subscribers.remove(email)
+        return jsonify({"message": "Unsubsribed successfully!"})
+    else:
+        return jsonify({"message": "You were not subscribed."})

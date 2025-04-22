@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { QuoteService } from '../quote.service';
+import { FormsModule } from '@angular/forms';
 export interface Quote {
   quote: string;
   author: string;
@@ -8,21 +9,19 @@ export interface Quote {
 
 @Component({
   selector: 'app-random-quote',
-  standalone: true,
-  imports: [NgIf],
-  template: `
-    <div *ngIf="quote" class="quote-container">
-      <blockquote id="quotecontainer">{{ quote.quote }}</blockquote>
-      <p>— {{ quote.author }}</p>
-      <p>
-        <button style="margin-top: 20px;" (click)="loadQuote()">New Quote</button>
-      </p>
-    </div>
-  `,
+  imports: [NgIf, FormsModule],
+  templateUrl: './random-quote.component.html',
   styleUrls: ['./random-quote.component.css']
 })
+
+// RandomQuoteComponent class, which includes:
+// - A constructor that takes an instance of QuoteService as a parameter.
+// - An ngOnInit method that calls the loadQuote method.
+// - A loadQuote method that calls the getRandomQuoteFromAllCategories method of the QuoteService.
+
 export class RandomQuoteComponent implements OnInit {
   quote: Quote | undefined;
+  category: string = '';
 
   constructor(private quoteService: QuoteService) {}
 
@@ -32,7 +31,27 @@ export class RandomQuoteComponent implements OnInit {
 
   loadQuote(): void {
     this.quoteService.getRandomQuoteFromAllCategories().subscribe(res => {
+
+      // Animation for the next quote, reanimation is forced to be applied to the quote container
+
+      const quoteContainer = document.getElementById('quotecontainer');
+      if (quoteContainer) {
+        quoteContainer.style.animation = 'none';
+        void quoteContainer.offsetWidth;
+        quoteContainer.style.animation = 'fadeIn 0.5s ease-in';
+      }
+
       this.quote = res.quote;
     });
+  }
+
+  applyFilter(): void {
+    if (this.category === '' || this.category === 'all') {
+      this.loadQuote();
+    } else {
+      this.quoteService.getQuoteByCategory(this.category).subscribe(res => {
+        this.quote = res.quote;
+      });
+    }
   }
 }

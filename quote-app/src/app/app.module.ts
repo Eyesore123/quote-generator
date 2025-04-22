@@ -6,7 +6,7 @@ import { QuoteListComponent } from './quote-list/quote-list.component';
 import { RandomQuoteComponent } from './random-quote/random-quote.component';
 import { routes } from './app.routes';  // Import the routes configuration
 import { CommonModule } from '@angular/common';
-// import { QuoteService } from './quote.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     BrowserModule,
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule
   ],
   // providers: [QuoteService],
   bootstrap: [AppComponent]

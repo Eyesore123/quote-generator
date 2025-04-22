@@ -1,1 +1,21 @@
-
+<div class="pagedivider">
+    <div *ngIf="quote leftside" class="quote-container">
+        <blockquote id="quotecontainer">{{ quote.quote }}</blockquote>
+        <p>— {{ quote.author }}</p>
+        <p>
+        <button style="margin-top: 80px;" (click)="loadQuote()">New Quote</button>
+        </p>
+    </div>
+    <div class="rightside">
+        <h2 style="margin-bottom: 100px;">Select a Quote by Category</h2>
+        <select id="category-selector" [(ngModel)]="category">
+            <option value="all">All Categories</option>
+            <option value="philosophy">Philosophy</option>
+            <option value="humor">Humor</option>
+            <option value="random">Random</option>
+        </select>
+        <p>
+        <button id="filter-button" style="margin-top: 50px" (click)="applyFilter()">Apply Filter</button>
+    </p>
+    </div>
+</div>
