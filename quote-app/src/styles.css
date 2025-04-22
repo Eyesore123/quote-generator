@@ -55,11 +55,16 @@ main {
 }
 
   
-  p, .blockquote, h1, h2, h3, h4, h5, h6 {
+  p, h1, h2, h3, h4, h5, h6, form, input, button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    text-align: center;
+  }
+
+  #quotecontainer {
+    height: 120px;
   }
 
 h1 {
@@ -103,7 +108,7 @@ span {
     border-radius: 5px;
   }
 
-/* Test styles: */
+/* Components*/
 
   
   .quote-item {
@@ -132,4 +137,49 @@ span {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* Page divider with left and right side */
+  .pagedivider {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: 50px;
+    gap: 300px;
+  }
+
+  .leftside {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .rightside {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-container, form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-container {
+    gap: 50px;
+  }
+
+  form {
+    gap: 20px;
+  }
   
+  /* Logos */
+
+  .logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+  }

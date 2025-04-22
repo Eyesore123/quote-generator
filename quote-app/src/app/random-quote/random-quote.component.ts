@@ -12,7 +12,7 @@ export interface Quote {
   imports: [NgIf],
   template: `
     <div *ngIf="quote" class="quote-container">
-      <blockquote>{{ quote.quote }}</blockquote>
+      <blockquote id="quotecontainer">{{ quote.quote }}</blockquote>
       <p>— {{ quote.author }}</p>
       <p>
         <button style="margin-top: 20px;" (click)="loadQuote()">New Quote</button>

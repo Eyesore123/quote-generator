@@ -1,10 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import random
 
 app = Flask(__name__)
 
 CORS(app, origins="*")
+
+subscribers = []
 
 quotes = {
     "philosophy": [
@@ -371,6 +373,8 @@ for category, category_quotes in quotes.items():
         else:
             all_quotes.append((q['quote'], q['author']))
 
+# Route for getting a random quote, not in use
+
 @app.route('/quote/<category>')
 def get_route(category):
     if category == "all":
@@ -380,6 +384,7 @@ def get_route(category):
         category_quotes = quotes.get(category, quotes["random"])
         return jsonify({"quote": random.choice(category_quotes)})
 
+# Route for getting all quotes
 
 @app.route('/quotes')
 def get_all_quotes():
@@ -391,3 +396,8 @@ def get_all_quotes():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Route for subscribing to a quote via form
+
+# @app.route('/subscribe', methods=['POST'])
+# def subscribe():
