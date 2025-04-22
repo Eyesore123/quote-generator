@@ -43,17 +43,21 @@ main {
     width: 100%;
     height: 1200px;
 }
+@media (min-width: 768px) {
+   
+  blockquote {
+    min-width: 520px;
+    display: flex;
+    justify-content: center;
+  }
+}
 
 .quote-container, .quote-list {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
 }
-
   
   p, h1, h2, h3, h4, h5, h6, form, input, button {
     display: flex;
@@ -72,7 +76,8 @@ h1 {
 }
 
 div.quote-item {
-    margin: 20px 0;
+    margin: 10px 0;
+    width: 90%;
 }
 
 span {
@@ -117,7 +122,8 @@ span {
     border-left: 3px solid #333;
     background: #f9f9f9;
     animation: fadeIn 0.5s ease-in;
-    width: 600px
+    min-width: 600px;
+    height: 100px;
   }
 
   #quotecontainer {
@@ -146,7 +152,8 @@ span {
   .pagedivider {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    padding: 50px;
+    width: 100%;
+    gap: 20px;
   }
 
   /* Select styling */
@@ -193,9 +200,18 @@ button:disabled {
     padding-right: 100px;
   }
 
+  @media (max-width: 768px) {
+    .leftside {
+      padding-right: 0;
+      padding-left: 20px;
+    }
+  }
+
   .quote-container {
     margin-right: 100px;
-    min-width: 600px;
+    margin-top: 50px;
+    border-right: 1px solid #ccc;
+    max-width: 600px;
   }
 
   .rightside {
@@ -203,6 +219,7 @@ button:disabled {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 80%;
   }
 
   .form-container {

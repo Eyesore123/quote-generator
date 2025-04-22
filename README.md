@@ -13,11 +13,11 @@ PS. Angular is a bit hard for me to learn with React background. So many files..
 - The basic structure of Angular projects
 - How to use Angular CLI
 - How routing works in Angular
+- Simple Python functions for data manipulation (quotes)
 
 ## What is still missing:
 
 - The backend for email subsciptions
 - Option to search quotes (by author name)
-- Filter in the all quotes -page for filtering all quotes of a single category
 
 ### I will come update this README.md as I go.

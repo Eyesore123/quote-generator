@@ -1,20 +1,34 @@
-
-
-<!-- <p>quote-list works!</p> -->
-
-<div class="quote-list">
-    <h2>All 300 Quotes</h2>
-    <div *ngFor="let quote of paginatedQuotes" class="quote-item">
-      <blockquote>"{{ quote.quote }}"</blockquote>
-      <p>— {{ quote.author }} 
-        <span class="category">({{ quote.category }})</span>
-    </p>
-    </div>
-  
-    <div class="pagination-controls">
-      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
-      <span>Page {{ currentPage }}</span>
-      <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= quotes.length">Next</button>
+<div class="pagedivider">
+  <div class="quote-list">
+    <div class="quote-container" style="padding-right: 100px;">
+      <h2>All 570 Quotes</h2>
+      
+      <div *ngFor="let quote of paginatedQuotes" class="quote-item">
+        <blockquote>"{{ quote.quote }}"</blockquote>
+        <p>— {{ quote.author }}
+          <span class="category" *ngIf="quote.category">({{ quote.category }})</span>
+        </p>
+      </div>
+      
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length">Next</button>
+      </div>
     </div>
   </div>
   
+  <div class="rightside">
+    <p style="display:flex; flex-direction:column; align-items:center; gap: 50px;">
+    <select id="category-selector" [(ngModel)]="selectedCategory">
+      <option value="all">All Categories</option>
+      <option value="philosophy">Philosophy</option>
+      <option value="humor">Humor</option>
+      <option value="business">Business</option>
+      <option value="psychology">Psychology</option>
+      <option value="random">Random</option>
+    </select>
+    <button id="filter-button" (click)="applyCategoryFilter()">Apply Filter</button>
+  </p>
+  </div>
+</div>

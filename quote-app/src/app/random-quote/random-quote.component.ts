@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 export interface Quote {
   quote: string;
   author: string;
+  category?: string;
 }
 
 @Component({
