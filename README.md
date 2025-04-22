@@ -1,4 +1,4 @@
-### Quote Generator
+## Quote Generator
 
 This is my first Angular project. And my first Python project if pygame tutorials do not count (lol). I don't know why I'm calling it Quote Generator, I guess I couldn't come up with a better name. But basically what it does is that Angular frontend shows quotes that are served from Python backend (Flask).
 
@@ -8,10 +8,16 @@ Backend and frontend are in different folders and run separately. When I get mor
 
 PS. Angular is a bit hard for me to learn with React background. So many files... Perhaps it'll get easier over time.
 
-### What I've learned during this project:
+## What I've learned during this project:
 
 - The basic structure of Angular projects
 - How to use Angular CLI
-- How basic routing works in Angular
+- How routing works in Angular
 
-## I will come update this README.md as I go.
+## What is still missing:
+
+- The backend for email subsciptions
+- Option to search quotes (by author name)
+- Filter in the all quotes -page for filtering all quotes of a single category
+
+### I will come update this README.md as I go.

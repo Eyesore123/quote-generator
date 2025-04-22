@@ -17,7 +17,7 @@ export interface Quote {
 // RandomQuoteComponent class, which includes:
 // - A constructor that takes an instance of QuoteService as a parameter.
 // - An ngOnInit method that calls the loadQuote method.
-// - A loadQuote method that calls the getRandomQuoteFromAllCategories method of the QuoteService.
+// - A loadQuote method that calls the getRandomQuoteFromAllCategories or getQuoteByCategory method of the QuoteService. Methods are called dynamically based on the value of the category property (this.category)
 
 export class RandomQuoteComponent implements OnInit {
   quote: Quote | undefined;
