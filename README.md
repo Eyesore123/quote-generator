@@ -19,7 +19,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 
 ## What is still missing:
 
-- The backend for email subsciptions (both Flask and PostgreSQL)
+- The backend for email subscriptions (both Flask and PostgreSQL)
 - Option to search quotes (by author name)
 
 ### I will come update this README.md as I go.
