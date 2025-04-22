@@ -1,0 +1,53 @@
+<div class="form-container" style="width: 600px;">
+    <h2 class="form-title">Search Quotes</h2>
+  
+    <div class="form-group">
+      <input 
+        class="form-input" 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (input)="onSearchInput()"
+        placeholder="Search for quotes or authors...">
+    </div>
+  
+    <div class="form-group form-radio-group">
+      <label class="form-radio">
+        <input type="radio" [(ngModel)]="searchType" name="searchType" value="all" (change)="onSearchInput()">
+        All
+      </label>
+      <label class="form-radio">
+        <input type="radio" [(ngModel)]="searchType" name="searchType" value="quote" (change)="onSearchInput()">
+        Quotes Only
+      </label>
+      <label class="form-radio">
+        <input type="radio" [(ngModel)]="searchType" name="searchType" value="author" (change)="onSearchInput()">
+        Authors Only
+      </label>
+    </div>
+  
+    <div *ngIf="isLoading" class="form-loading">
+      Searching...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+      
+      <div *ngIf="searchResults.length > 0" class="results-summary">
+        Found {{ resultsCount }} result{{ resultsCount !== 1 ? 's' : '' }}
+      </div>
+      
+      <div class="search-results">
+        <div *ngFor="let quote of searchResults" class="quote-item">
+          <blockquote>"{{ quote.quote }}"</blockquote>
+          <p>— {{ quote.author }}
+            <span class="category" *ngIf="quote.category">({{ quote.category }})</span>
+          </p>
+        </div>
+        
+        <div *ngIf="searchQuery && searchResults.length === 0 && !isLoading && !error" class="no-results">
+          No quotes found matching your search criteria.
+        </div>
+      </div>
+  </div>
+  

@@ -1,15 +1,12 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
+    background-color:  #f9f2ff;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 app-root {
@@ -41,7 +38,9 @@ main {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 1200px;
+    height: auto;
+    margin: 0;
+    padding: 0;
 }
 @media (min-width: 768px) {
    
@@ -197,7 +196,7 @@ button:disabled {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-right: 100px;
+    /* padding-right: 100px; */
   }
 
   @media (max-width: 768px) {
@@ -232,8 +231,15 @@ button:disabled {
     background: #f9f9f9;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: auto;
+    max-width: 700px;
+    min-width: 400px;
+    margin: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .form-container {
+      min-width: 300px;
+    }
   }
   
   form {
@@ -243,8 +249,39 @@ button:disabled {
     width: 100%;
   }
   
+.form-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  &.form-radio-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  &.form-radio-group {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    gap: 3rem;
+  }
+}
+
+  
   form input,
   form select,
+  input,
   form button {
     padding: 12px 16px;
     border: 1px solid #ccc;
@@ -252,6 +289,10 @@ button:disabled {
     font-size: 1rem;
     width: 100%;
     transition: all 0.2s ease-in-out;
+  }
+
+  input {
+    max-width: 300px;
   }
   
   form input:focus,
@@ -266,12 +307,15 @@ button:disabled {
     color: white;
     border: none;
     cursor: pointer;
+    max-width: 150px;
   }
   
   form button:hover {
     background-color: #0056b3;
   }
-  
+  label.form-radio input[type="radio"] {
+    margin-bottom: 20px;
+  }
   
   /* Logos */
 

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+# from models import Quote
 import random
 
 app = Flask(__name__)
@@ -634,28 +635,81 @@ def get_all_quotes():
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 # Route for subscribing to a quote via form
 
-@app.route('/subscribe', methods=['POST'])
-def subscribe():
-    email = request.form['email']
-    if email not in subscribers:
-        subscribers.append(email)
-        return jsonify({"message": "You have been subscribed!"})
-    else:
-        return jsonify({"message": "You are already subscribed!"})
+# @app.route('/subscribe', methods=['POST'])
+# def subscribe():
+#     email = request.form['email']
+#     if email not in subscribers:
+#         subscribers.append(email)
+#         return jsonify({"message": "You have been subscribed!"})
+#     else:
+#         return jsonify({"message": "You are already subscribed!"})
     
 
 # Route for unsubscribing from a quote via form
 
-@app.route('/unsubscribe', methods=['POST'])
-def unsubscribe():
-    email = request.form['email']
-    if email in subscribers:
-        subscribers.remove(email)
-        return jsonify({"message": "Unsubsribed successfully!"})
-    else:
-        return jsonify({"message": "You were not subscribed."})
+# @app.route('/unsubscribe', methods=['POST'])
+# def unsubscribe():
+#     email = request.form['email']
+#     if email in subscribers:
+#         subscribers.remove(email)
+#         return jsonify({"message": "Unsubsribed successfully!"})
+#     else:
+#         return jsonify({"message": "You were not subscribed."})
+    
+# Search function for server-side search
+
+# @app.route('/api/search', methods=['GET'])
+# def search_quotes():
+#     query = request.args.get('q', '')
+#     search_type = request.args.get('type', 'all')
+    
+#     if not query:
+#         return jsonify({'quotes': []}), 200
+    
+#     try:
+#         if search_type == 'quote':
+#             quotes = Quote.query.filter(Quote.quote.ilike(f'%{query}%')).all()
+#         elif search_type == 'author':
+#             quotes = Quote.query.filter(Quote.author.ilike(f'%{query}%')).all()
+#         elif search_type == 'category':
+#             quotes = Quote.query.filter(Quote.category.ilike(f'%{query}%')).all()
+#         else:  # 'all'
+#             quotes = Quote.query.filter(
+#                 (Quote.quote.ilike(f'%{query}%')) | 
+#                 (Quote.author.ilike(f'%{query}%')) |
+#                 (Quote.category.ilike(f'%{query}%'))
+#             ).all()
+        
+#         result = [quote.to_dict() for quote in quotes]
+        
+#         return jsonify({
+#             'success': True,
+#             'quotes': result,
+#             'count': len(result)
+#         }), 200
+#     except Exception as e:
+#         return jsonify({
+#             'success': False,
+#             'error': str(e)
+#         }), 500
+
+# @app.route('/api/quotes/categories', methods=['GET'])
+# def get_categories():
+#     try:
+#         categories = db.session.query(Quote.category).distinct().all()
+#         category_list = [cat[0] for cat in categories if cat[0]]
+        
+#         return jsonify({
+#             'success': True,
+#             'categories': category_list
+#         }), 200
+#     except Exception as e:
+#         return jsonify({
+#             'success': False,
+#             'error': str(e)
+#         }), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
