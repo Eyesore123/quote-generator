@@ -2,7 +2,7 @@
 
 This is my first Angular project. And my first Python project if pygame tutorials do not count (lol). I don't know why I'm calling it Quote Generator, I guess I couldn't come up with a better name. But basically what it does is that the Angular frontend shows quotes that are served from Python backend (Flask).
 
-This is still a work in progress. Right now frontend works and user can check individual random quotes or quote lists by category. There are 570 quotes in total, with pagination. Backend serves the quotes from App.py (Flask). User can search quote by author and quote, but fetch is done on the client side before I write the code for backend.
+This is still a work in progress. Right now frontend works and user can browse individual random quotes or quote lists by category. There are 570 quotes in total, with pagination. Backend serves the quotes from App.py (Flask). User can search quote by author and quote, but fetch is done on the client side before I write the code for backend.
 
 So I try adding new functionalities using Flask. The goal is to have sub and unsub functions and backend that serves queries using endpoints and send scheduled quotes for those who have an active sub. I might make this a project a little bit larger from what I intended and use PostgreSQL to make a robust and secure database. I'll improve the styles as I go. Most of the python files are still empty.
 
