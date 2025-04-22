@@ -28,22 +28,23 @@ export class RandomQuoteComponent implements OnInit {
   ngOnInit(): void {
     this.loadQuote();
   }
-
   loadQuote(): void {
-    this.quoteService.getRandomQuoteFromAllCategories().subscribe(res => {
-
-      // Animation for the next quote, reanimation is forced to be applied to the quote container
-
+    const fetchQuote = this.category === '' || this.category === 'all'
+      ? this.quoteService.getRandomQuoteFromAllCategories()
+      : this.quoteService.getQuoteByCategory(this.category);
+  
+    fetchQuote.subscribe(res => {
       const quoteContainer = document.getElementById('quotecontainer');
       if (quoteContainer) {
         quoteContainer.style.animation = 'none';
-        void quoteContainer.offsetWidth;
+        void quoteContainer.offsetWidth; // force reflow
         quoteContainer.style.animation = 'fadeIn 0.5s ease-in';
       }
-
+  
       this.quote = res.quote;
     });
   }
+  
 
   applyFilter(): void {
     if (this.category === '' || this.category === 'all') {
