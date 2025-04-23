@@ -7,10 +7,47 @@ app = Flask(__name__)
 
 CORS(app, origins="*")
 
-subscribers = []
-
 quotes = {
     "philosophy": [
+        {"quote": "Nature is visible spirit; spirit is invisible nature.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "History as a whole is a progressive, gradually self-disclosing revelation of the Absolute.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "Has creation a final goal? And if so, why was it not reached at once? Because God is Life, and not merely Being.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "Only he who has tasted freedom can feel the desire to make over everything in its image.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "As there is nothing before or outside of God, he must contain within himself the ground of his existence.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "The Godhead is not divine nature or substance, but the devouring ferocity of purity.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "God has no beginning only insofar as there is no beginning of his beginning.", "author": "Friedrich Wilhelm Joseph Schelling"},
+  {"quote": "I invented nothing. I've been the one and only secretary of my own sensations.", "author": "Emil Cioran"},
+  {"quote": "Bach, Shakespeare, Beethoven, Dostoevsky and Nietzsche are the only arguments against monotheism.", "author": "Emil Cioran"},
+  {"quote": "Man is free at the moment he wishes to be.", "author": "Voltaire"},
+  {"quote": "The mind is a voyeur. But not upon 'the world.' Upon itself.", "author": "Emil Cioran"},
+  {"quote": "Truth is a pathless land.", "author": "Jiddu Krishnamurti"},
+  {"quote": "It is no measure of health to be well adjusted to a profoundly sick society.", "author": "Jiddu Krishnamurti"},
+  {"quote": "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.", "author": "Albert Camus"},
+  {"quote": "Freedom is not a reward or a decoration that is celebrated with champagne… It is daily bread and water.", "author": "Simone de Beauvoir"},
+  {"quote": "One is not born, but rather becomes, a woman.", "author": "Simone de Beauvoir"},
+  {"quote": "Morality is not the doctrine of how we may make ourselves happy, but how we may make ourselves worthy of happiness.", "author": "Immanuel Kant"},
+  {"quote": "The end may justify the means as long as there is something that justifies the end.", "author": "Leon Trotsky"},
+  {"quote": "The more I learn, the more I realize how much I don't know.", "author": "Albert Einstein"},
+  {"quote": "We are our choices.", "author": "Jean-Paul Sartre"},
+  {"quote": "Man is condemned to be free because once thrown into the world, he is responsible for everything he does.", "author": "Jean-Paul Sartre"},
+  {"quote": "The only true wisdom is in knowing you know nothing.", "author": "Socrates"},
+  {"quote": "Life must be understood backward. But it must be lived forward.", "author": "Søren Kierkegaard"},
+  {"quote": "No generation has learned to love from another; no generation is able to begin at any other point than the beginning.", "author": "Søren Kierkegaard"},
+  {"quote": "Each generation has its own task and need not trouble itself unduly by being everything to previous and succeeding generations.", "author": "Søren Kierkegaard"},
+  {"quote": "Those true Christians who in every generation live a life contemporaneous with that of Christ have nothing whatsoever to do with Christians of the preceding generation.", "author": "Søren Kierkegaard"},
+  {"quote": "The whole generation and every individual in the generation is a participant in one's having faith.", "author": "Søren Kierkegaard"},
+  {"quote": "Anything goes.", "author": "Paul Feyerabend"},
+  {"quote": "No two individuals are ever exactly alike; procedures should therefore be able to vary also.", "author": "Paul Feyerabend"},
+  {"quote": "The less you understand, the better you listen.", "author": "Jacques Lacan"},
+  {"quote": "The ego in Freud's theory and in the technique of psychoanalysis.", "author": "Jacques Lacan"},
+  {"quote": "The unexamined death is also not worth dying.", "author": "Socrates"},
+  {"quote": "I would rather be a little nobody, than to be an evil somebody.", "author": "Abraham Lincoln"},
+  {"quote": "We are what we think. All that we are arises with our thoughts. With our thoughts, we make the world.", "author": "Buddha"},
+  {"quote": "The essence of being human is the ability to make choices.", "author": "Jean-Paul Sartre"},
+  {"quote": "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate.", "author": "Ralph Waldo Emerson"},
+  {"quote": "He who has a why to live can bear almost any how.", "author": "Friedrich Nietzsche"},
+  {"quote": "One cannot step twice in the same river, for fresh waters are ever flowing in upon you.", "author": "Heraclitus"},
+  {"quote": "A person who never made a mistake never tried anything new.", "author": "Albert Einstein"},
         {"quote": "The unexamined life is not worth living.", "author": "Socrates"},
         {"quote": "I think, therefore I am.", "author": "René Descartes"},
         {"quote": "He who thinks great thoughts, often makes great errors.", "author": "Martin Heidegger"},
@@ -20,7 +57,6 @@ quotes = {
         {"quote": "Liberty consists in doing what one desires.", "author": "John Stuart Mill"},
         {"quote": "God is dead. God remains dead. And we have killed him.", "author": "Friedrich Nietzsche"},
         {"quote": "The only thing I know is that I know nothing.", "author": "Socrates"},
-        {"quote": "Life must be understood backward. But it must be lived forward.", "author": "Søren Kierkegaard"},
         {"quote": "Freedom is the recognition of necessity.", "author": "Georg Wilhelm Friedrich Hegel"},
         {"quote": "Even while they teach, men learn.", "author": "Seneca"},
         {"quote": "The greatest happiness of the greatest number is the foundation of morals and legislation.", "author": "Jeremy Bentham"},
@@ -73,22 +109,14 @@ quotes = {
     {"quote": "A man is but the product of his thoughts. What he thinks, he becomes.", "author": "Mahatma Gandhi"},
     {"quote": "An eye for an eye only ends up making the whole world blind.", "author": "Mahatma Gandhi"},
     {"quote": "The mind that opens to a new idea never returns to its original size.", "author": "Albert Einstein"},
-    {"quote": "I would rather be a little nobody, than to be an evil somebody.", "author": "Abraham Lincoln"},
     {"quote": "The most important thing is to try to inspire people so that they can be great in whatever they want to do.", "author": "Kobe Bryant"},
     {"quote": "What can be asserted without evidence can also be dismissed without evidence.", "author": "Christopher Hitchens"},
     {"quote": "Knowing others is intelligence; knowing yourself is true wisdom.", "author": "Lao Tzu"},
     {"quote": "To be, or not to be, that is the question.", "author": "William Shakespeare"},
-    {"quote": "We are what we think. All that we are arises with our thoughts. With our thoughts, we make the world.", "author": "Buddha"},
     {"quote": "The only way to deal with this life meaningfully is to find one's passion and pursue it.", "author": "Søren Kierkegaard"},
-    {"quote": "The essence of being human is the ability to make choices.", "author": "Jean-Paul Sartre"},
-    {"quote": "Man is free at the moment he wishes to be.", "author": "Voltaire"},
     {"quote": "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well.", "author": "Ralph Waldo Emerson"},
-    {"quote": "I can resist anything except temptation.", "author": "Oscar Wilde"},
-    {"quote": "He who has a why to live can bear almost any how.", "author": "Friedrich Nietzsche"},
-    {"quote": "One cannot step twice in the same river, for fresh waters are ever flowing in upon you.", "author": "Heraclitus"},
     {"quote": "Life without love is like a tree without blossoms or fruit.", "author": "Khalil Gibran"},
     {"quote": "We are all in the gutter, but some of us are looking at the stars.", "author": "Oscar Wilde"},
-    {"quote": "A person who never made a mistake never tried anything new.", "author": "Albert Einstein"},
     {"quote": "I never think of the future. It comes soon enough.", "author": "Albert Einstein"}
 
     ],
@@ -634,82 +662,6 @@ def get_all_quotes():
         for q in items:
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
-
-# Route for subscribing to a quote via form
-
-# @app.route('/subscribe', methods=['POST'])
-# def subscribe():
-#     email = request.form['email']
-#     if email not in subscribers:
-#         subscribers.append(email)
-#         return jsonify({"message": "You have been subscribed!"})
-#     else:
-#         return jsonify({"message": "You are already subscribed!"})
-    
-
-# Route for unsubscribing from a quote via form
-
-# @app.route('/unsubscribe', methods=['POST'])
-# def unsubscribe():
-#     email = request.form['email']
-#     if email in subscribers:
-#         subscribers.remove(email)
-#         return jsonify({"message": "Unsubsribed successfully!"})
-#     else:
-#         return jsonify({"message": "You were not subscribed."})
-    
-# Search function for server-side search
-
-# @app.route('/api/search', methods=['GET'])
-# def search_quotes():
-#     query = request.args.get('q', '')
-#     search_type = request.args.get('type', 'all')
-    
-#     if not query:
-#         return jsonify({'quotes': []}), 200
-    
-#     try:
-#         if search_type == 'quote':
-#             quotes = Quote.query.filter(Quote.quote.ilike(f'%{query}%')).all()
-#         elif search_type == 'author':
-#             quotes = Quote.query.filter(Quote.author.ilike(f'%{query}%')).all()
-#         elif search_type == 'category':
-#             quotes = Quote.query.filter(Quote.category.ilike(f'%{query}%')).all()
-#         else:  # 'all'
-#             quotes = Quote.query.filter(
-#                 (Quote.quote.ilike(f'%{query}%')) | 
-#                 (Quote.author.ilike(f'%{query}%')) |
-#                 (Quote.category.ilike(f'%{query}%'))
-#             ).all()
-        
-#         result = [quote.to_dict() for quote in quotes]
-        
-#         return jsonify({
-#             'success': True,
-#             'quotes': result,
-#             'count': len(result)
-#         }), 200
-#     except Exception as e:
-#         return jsonify({
-#             'success': False,
-#             'error': str(e)
-#         }), 500
-
-# @app.route('/api/quotes/categories', methods=['GET'])
-# def get_categories():
-#     try:
-#         categories = db.session.query(Quote.category).distinct().all()
-#         category_list = [cat[0] for cat in categories if cat[0]]
-        
-#         return jsonify({
-#             'success': True,
-#             'categories': category_list
-#         }), 200
-#     except Exception as e:
-#         return jsonify({
-#             'success': False,
-#             'error': str(e)
-#         }), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

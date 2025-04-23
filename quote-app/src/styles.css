@@ -208,7 +208,7 @@ button:disabled {
 
   .quote-container {
     margin-right: 100px;
-    margin-top: 50px;
+    /* margin-top: 50px; */
     border-right: 1px solid #ccc;
     max-width: 600px;
   }
