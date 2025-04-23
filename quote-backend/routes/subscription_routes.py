@@ -6,10 +6,7 @@ from flask import Blueprint, jsonify, request
 
 # Again, db is imported from app.py after db is defined in app.py
 
-# Import to test quote search in local env:
-
-from app import quotes  # Import your quotes dictionary
-
+from data.quotes_data import quotes
 
 # Blueprint for subscription routes
 
