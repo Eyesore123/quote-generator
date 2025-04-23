@@ -17,9 +17,9 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - How routing works in Angular
 - Simple Python functions for data manipulation (quotes)
 
-## What is still missing:
+## What is still under work:
 
 - The backend for email subscriptions. Also the backend for API calls to fetch quotes is still missing, not to mention the backend for the actual email sending, scheduling, postgres and so on.
 - Option to search quotes (by author name) using server-side fetch.
 
-### I will come update this README.md as I go.
+### I will update this README.md as I make progress.

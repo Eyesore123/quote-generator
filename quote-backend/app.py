@@ -1,9 +1,20 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+# from config import Config
+# from routes.subscription_routes import subscription_routes
 # from models import Quote
 import random
 
+# Define db in here
+
 app = Flask(__name__)
+
+# app.config.from_object(Config)
+
+# Register the subscription routes blueprint
+
+# app.register_blueprint(subscription_routes)
 
 CORS(app, origins="*")
 
