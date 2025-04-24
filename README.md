@@ -25,4 +25,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - The backend for email subscriptions. Also the backend for API calls to fetch quotes on the server-side is still missing.
 - First and last page buttons for pagination
 
+![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)
+
+
 ### I will update this README.md as I make progress.
