@@ -27,6 +27,7 @@ Thumbs.db
 
 # Environment / credentials
 .env
+alembic.ini
 
 # Pytest cache
 quote-backend/.pytest_cache/

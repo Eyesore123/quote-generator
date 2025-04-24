@@ -1,5 +1,12 @@
 from flask import Flask, jsonify
+from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+import os
+from models import db
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Import the quotes dictionary from quotes_data.py
 from data.quotes_data import quotes
@@ -13,7 +20,11 @@ import random
 
 app = Flask(__name__)
 
-# app.config.from_object(Config)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+migrate = Migrate(app, db)
 
 # Register the subscription routes blueprint
 

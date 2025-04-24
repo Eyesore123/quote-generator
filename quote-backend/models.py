@@ -1,15 +1,10 @@
-# from app import db
+from flask_sqlalchemy import SQLAlchemy
 
-# class Quote(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     quote = db.Column(db.String(500), nullable=False)
-#     author = db.Column(db.String(100), nullable=False)
-#     category = db.Column(db.String(100), nullable=False)
+db = SQLAlchemy()
 
-#     def to_dict(self):
-#         return {
-#             'id': self.id,
-#             'quote': self.quote,
-#             'author': self.author,
-#             'category': self.category
-#         }
+class Subscriber(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Subscriber {self.email}>"
