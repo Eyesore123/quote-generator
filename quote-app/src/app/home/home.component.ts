@@ -7,19 +7,16 @@ import { CommonModule } from '@angular/common';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  // standalone: true,
   imports: [FormsModule, CommonModule]
 })
 export class HomeComponent {
   email: string = '';
   frequency: string = 'daily';
   sendHour: number = 12;
-  categories: string = '';
   unsubscribeEmail: string = '';
   statusMessage: string = '';
   hours = Array.from({ length: 24 }, (_, i) => i);
-  
-  // Object to track checkbox selections
+
   categorySelections = {
     philosophy: false,
     humor: false,
@@ -28,17 +25,14 @@ export class HomeComponent {
     random: false
   };
 
-  selectedCategories: string = '';
-
   constructor(private http: HttpClient) {}
 
   subscribe() {
-    // Convert checkbox selections to comma-separated string
     const selectedCategories = Object.entries(this.categorySelections)
       .filter(([_, isSelected]) => isSelected)
-      .map(([category, _]) => category)
+      .map(([category]) => category)
       .join(',');
-    
+
     const body = {
       email: this.email,
       frequency: this.frequency,
@@ -46,20 +40,37 @@ export class HomeComponent {
       categories: selectedCategories
     };
 
-    this.http.post('http://127.0.0.1:5000/subscribe', body).subscribe(response => {
-      this.statusMessage = 'Subscribed successfully!';
-    }, error => {
-      this.statusMessage = 'Subscription failed. Please try again.';
+    this.http.post('http://127.0.0.1:5000/subscribe', body).subscribe({
+      next: res => {
+        this.statusMessage = 'Subscribed successfully!';
+        this.resetForm();
+      },
+      error: err => {
+        this.statusMessage = 'Subscription failed. Please try again.';
+      }
     });
   }
 
   unsubscribe() {
     const body = { email: this.unsubscribeEmail };
-    
-    this.http.post('http://127.0.0.1:5000/unsubscribe', body).subscribe(response => {
-      this.statusMessage = 'Unsubscribed successfully!';
-    }, error => {
-      this.statusMessage = 'Unsubscription failed. Please try again.';
+
+    this.http.post('http://127.0.0.1:5000/unsubscribe', body).subscribe({
+      next: res => {
+        this.statusMessage = 'Unsubscribed successfully!';
+        this.unsubscribeEmail = '';
+      },
+      error: err => {
+        this.statusMessage = 'Unsubscription failed. Please try again.';
+      }
+    });
+  }
+
+  resetForm() {
+    this.email = '';
+    this.frequency = 'daily';
+    this.sendHour = 12;
+    Object.keys(this.categorySelections).forEach(key => {
+      this.categorySelections[key as keyof typeof this.categorySelections] = false;
     });
   }
 }

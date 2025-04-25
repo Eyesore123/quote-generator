@@ -1,38 +1,46 @@
-
-from datetime import datetime # datetime module is used to work with dates and times.
-from models import Subscriber
+from datetime import datetime
+from models import Subscriber, db
 from data.quotes_data import quotes
 from services.email_service import send_quote_email
 import random
+import schedule
+import time
+import threading
 
-def send_quotes_by_schedule(frequency, current_hour):
-    """
-    Sends quotes to subscribers based on their preferred frequency and send hour.
+def send_quotes_at_hour(hour):
+    print(f"Running job for hour {hour} at {datetime.now()}")
 
-    Args:
-        frequency (str): The frequency of the quotes job (e.g. daily, weekly, monthly).
-        current_hour (int): The current hour of the day.
-
-    Returns:
-        None
-    """
-    print(f"Running {frequency} quotes job at {datetime.now()}, hour: {current_hour}")
     try:
-        subscribers = Subscriber.query.filter_by(frequency=frequency).all()
+        subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == hour).all()
+
         for subscriber in subscribers:
-            if subscriber.send_hour != current_hour:
-                continue  # Only send to those who chose this hour
+            # Optional: filter by frequency too
+            if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
+                continue
 
-            categories = subscriber.categories.split(',') if subscriber.categories else []
-            filtered_quotes = [quote for quote in quotes if not categories or quote['author'] in categories]
+            if subscriber.frequency == 'weekly' and datetime.now().weekday() != 0:  # Only on Mondays
+                continue
 
-            if filtered_quotes:
-                random_quote = random.choice(filtered_quotes)
-                send_quote_email(
-                    subscriber.email, 
-                    random_quote['quote'], 
-                    random_quote['author'], 
-                    None  # No category available in the quotes data
-                )
+            if subscriber.frequency == 'monthly' and datetime.now().day != 1:  # Only on the 1st of the month
+                continue
+
+            random_quote = random.choice(quotes)
+            send_quote_email(subscriber.email, random_quote)
+
     except Exception as e:
-        print(f"Error in {frequency} quotes job: {e}")
+        print(f"Error sending quotes at hour {hour}: {e}")
+
+def start_scheduler():
+    for hour in range(24):  # Schedule job for every hour
+        schedule.every().day.at(f"{hour:02d}:00").do(send_quotes_at_hour, hour)
+
+    def run_scheduler():
+        while True:
+            schedule.run_pending()
+            time.sleep(60)
+
+    threading.Thread(target=run_scheduler, daemon=True).start()
+    print("Dynamic scheduler started")
+
+# Call this once when app starts
+start_scheduler()

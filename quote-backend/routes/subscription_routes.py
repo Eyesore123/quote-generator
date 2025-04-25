@@ -29,22 +29,36 @@ def search_quotes():
 # === POST: Subscribe via email ===
 @subscription_routes.route('/subscribe', methods=['POST'])
 def subscribe():
-    email = request.form.get('email')
-    send_hour = request.form.get('send_hour')
-    categories = request.form.getlist('categories')
+    data = request.get_json()
+    email = data.get('email')
+    send_hour = data.get('send_hour')
+    frequency = data.get('frequency', 'daily')
+    categories = data.get('categories', '')
+
     if not email:
         return jsonify({"message": "Email is required."}), 400
-    if not send_hour:
+    if send_hour is None:
         return jsonify({"message": "Send hour is required."}), 400
 
     existing = Subscriber.query.filter_by(email=email).first()
     if existing:
-        return jsonify({"message": "You are already subscribed to our newsletter."}), 200
+        # Update existing user
+        existing.send_hour = send_hour
+        existing.frequency = frequency
+        existing.categories = categories
+        db.session.commit()
+        return jsonify({"message": "Subscription updated!"}), 200
 
-    new_subscriber = Subscriber(email=email, send_hour=send_hour, categories=categories)
+    new_subscriber = Subscriber(
+        email=email,
+        send_hour=send_hour,
+        frequency=frequency,
+        categories=categories
+    )
     db.session.add(new_subscriber)
     db.session.commit()
     return jsonify({"message": "You have successfully subscribed to our newsletter!"}), 201
+
 
 # === POST: Unsubscribe via email ===
 @subscription_routes.route('/unsubscribe', methods=['POST'])
