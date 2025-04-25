@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [FormsModule]
+  // standalone: true,
+  imports: [FormsModule, CommonModule]
 })
 export class HomeComponent {
   email: string = '';
   frequency: string = 'daily';
+  sendHour: number = 12;
   categories: string = '';
   unsubscribeEmail: string = '';
   statusMessage: string = '';
+  hours = Array.from({ length: 24 }, (_, i) => i);
   
   // Object to track checkbox selections
   categorySelections = {
@@ -23,6 +27,8 @@ export class HomeComponent {
     psychology: false,
     random: false
   };
+
+  selectedCategories: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +42,7 @@ export class HomeComponent {
     const body = {
       email: this.email,
       frequency: this.frequency,
+      send_hour: this.sendHour,
       categories: selectedCategories
     };
 

@@ -11,7 +11,7 @@ I will later try adding new functionalities using Flask. Sub and unsub functions
 
 Backend and frontend are in different folders and run separately. When I get more done I'll try to make it "production ready".
 
-PS. Angular has been a bit hard for me to learn with React background. So many files... I think I get the gist of it but there are still parts that are quite hard to fathom. Perhaps it'll get easier over time.
+PS. Angular has been a bit hard for me to learn with React background. So many files... Module imports? I think I get the gist of it but there are still parts that are quite hard to fathom. Perhaps it'll get easier over time.
 
 ## What I've learned during this project:
 
@@ -19,6 +19,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - How to use Angular CLI
 - How routing works in Angular
 - Simple Python functions for data manipulation (quotes)
+- Flask commands
 
 ## What is still under work:
 

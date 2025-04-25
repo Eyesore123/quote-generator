@@ -17,6 +17,12 @@
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                 </select>
+
+                <select [(ngModel)]="sendHour" name="sendHour">
+                    <ng-container *ngFor="let h of hours">
+                      <option [value]="h">{{ h }}:00</option>
+                    </ng-container>
+                  </select>
                 
                 <div class="categories-container">
                     <p>Select categories:</p>
