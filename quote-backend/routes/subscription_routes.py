@@ -34,6 +34,7 @@ def subscribe():
     send_hour = data.get('send_hour')
     frequency = data.get('frequency', 'daily')
     categories = data.get('categories', '')
+    time_zone = data.get('time_zone', 'UTC')
 
     if not email:
         return jsonify({"message": "Email is required."}), 400
@@ -53,7 +54,8 @@ def subscribe():
         email=email,
         send_hour=send_hour,
         frequency=frequency,
-        categories=categories
+        categories=categories,
+        time_zone=time_zone
     )
     db.session.add(new_subscriber)
     db.session.commit()

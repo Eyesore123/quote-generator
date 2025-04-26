@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { time } from 'node:console';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,9 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule]
 })
 export class HomeComponent {
+
+  timeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   email: string = '';
   frequency: string = 'daily';
   sendHour: number = 12;
@@ -37,6 +41,7 @@ export class HomeComponent {
       email: this.email,
       frequency: this.frequency,
       send_hour: this.sendHour,
+      time_zone: this.timeZone,
       categories: selectedCategories
     };
 
