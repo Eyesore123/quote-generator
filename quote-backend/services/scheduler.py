@@ -27,6 +27,11 @@ def send_quotes_at_hour(hour):
             random_quote = random.choice(quotes)
             send_quote_email(subscriber.email, random_quote)
 
+            try: 
+                print(f"Sent quote to {subscriber.email} at {datetime.now()}")
+            except Exception as e:
+                print(f"Error sending quote to {subscriber.email}: {e}")
+
     except Exception as e:
         print(f"Error sending quotes at hour {hour}: {e}")
 

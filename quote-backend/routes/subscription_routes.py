@@ -4,7 +4,7 @@ from data.quotes_data import quotes
 
 subscription_routes = Blueprint('subscription_routes', __name__)
 
-# === GET all matching quotes by query ===
+# === GET: Search quotes ===
 @subscription_routes.route('/api/search', methods=['GET'])
 def search_quotes():
     query = request.args.get('q', '').lower()
@@ -41,15 +41,17 @@ def subscribe():
     if send_hour is None:
         return jsonify({"message": "Send hour is required."}), 400
 
-    existing = Subscriber.query.filter_by(email=email).first()
-    if existing:
-        # Update existing user
-        existing.send_hour = send_hour
-        existing.frequency = frequency
-        existing.categories = categories
+    subscriber = Subscriber.query.filter_by(email=email).first()
+    if subscriber:
+        # Update existing subscriber
+        subscriber.send_hour = send_hour
+        subscriber.frequency = frequency
+        subscriber.categories = categories
+        subscriber.time_zone = time_zone
         db.session.commit()
         return jsonify({"message": "Subscription updated!"}), 200
 
+    # Create new subscriber
     new_subscriber = Subscriber(
         email=email,
         send_hour=send_hour,
@@ -65,7 +67,9 @@ def subscribe():
 # === POST: Unsubscribe via email ===
 @subscription_routes.route('/unsubscribe', methods=['POST'])
 def unsubscribe():
-    email = request.form.get('email')
+    data = request.get_json()
+    email = data.get('email')
+
     if not email:
         return jsonify({"message": "Email is required."}), 400
 
@@ -73,7 +77,7 @@ def unsubscribe():
     if subscriber:
         db.session.delete(subscriber)
         db.session.commit()
-        return jsonify({"message": "Unsubscribed successfully."})
+        return jsonify({"message": "Unsubscribed successfully."}), 200
     else:
         return jsonify({"message": "You were not subscribed to our newsletter."}), 200
 

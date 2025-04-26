@@ -24,9 +24,9 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 
 ## What is still under work:
 
-- The backend for email subscriptions. Also the backend for API calls to fetch quotes on the server-side is still missing. I will add server-side API calls to fetch quotes when everything else is working.
+- TThe backend for API calls to fetch quotes on the server-side is still missing. I will add server-side API calls to fetch quotes when everything else is working, and I have to transfer all the quotes to db.
+- Bacend logging is missing.
 - First and last page buttons for pagination.
-- Automatic time zone detection.
 - Need to figure out how to add unsubbing link to email. I've done that with SendGrid and Node.js backend before but I'm not sure how to do it with Flask/Python.
 
 ![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)

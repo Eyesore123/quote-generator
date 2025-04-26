@@ -19,6 +19,7 @@ import random
 # Initialize sql alchemy in here + import migrate
 
 app = Flask(__name__)
+CORS(app, origins="*")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,8 +30,6 @@ migrate = Migrate(app, db)
 # Register the subscription routes blueprint
 
 app.register_blueprint(subscription_routes)
-
-CORS(app, origins="*")
 
 # Duplicate finder func:
 all_quotes = []
