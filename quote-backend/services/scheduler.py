@@ -7,45 +7,53 @@ import schedule
 import time
 import threading
 
-def send_quotes_at_hour(hour):
-    print(f"Running job for hour {hour} at {datetime.now()}")
+def send_quotes_at_hour(app):
+    now = datetime.now()
+    current_hour = now.hour
+
+    print(f"Running job for hour {current_hour} at {now}")
 
     try:
-        subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == hour).all()
+        with app.app_context():
+            subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == current_hour).all()
 
-        for subscriber in subscribers:
-            # Optional: filter by frequency too
-            if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
-                continue
+            for subscriber in subscribers:
+                if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
+                    continue
 
-            if subscriber.frequency == 'weekly' and datetime.now().weekday() != 0:  # Only on Mondays
-                continue
+                if subscriber.frequency == 'weekly' and now.weekday() != 0:  # Monday only
+                    continue
 
-            if subscriber.frequency == 'monthly' and datetime.now().day != 1:  # Only on the 1st of the month
-                continue
+                if subscriber.frequency == 'monthly' and now.day != 1:  # 1st day only
+                    continue
 
-            random_quote = random.choice(quotes)
-            send_quote_email(subscriber.email, random_quote)
+                all_quotes = []
+                for quote_list in quotes.values():
+                    all_quotes.extend(quote_list)
 
-            try: 
-                print(f"Sent quote to {subscriber.email} at {datetime.now()}")
-            except Exception as e:
-                print(f"Error sending quote to {subscriber.email}: {e}")
+                random_quote = random.choice(all_quotes)
+
+                quote_text = random_quote['quote']
+                author = random_quote['author']
+
+                send_quote_email(subscriber.email, quote_text, author)
+
+                print(f"Sent quote to {subscriber.email} at {now}")
 
     except Exception as e:
-        print(f"Error sending quotes at hour {hour}: {e}")
+        print(f"Error sending quotes at hour {current_hour}: {e}")
 
-def start_scheduler():
-    for hour in range(24):  # Schedule job for every hour
-        schedule.every().day.at(f"{hour:02d}:00").do(send_quotes_at_hour, hour)
+
+def start_scheduler(app):
+    # Run every hour at :00 minutes
+    schedule.every().hour.at(":00").do(send_quotes_at_hour, app)
+
+    print("Scheduler started, will run every hour at :00")
 
     def run_scheduler():
         while True:
             schedule.run_pending()
-            time.sleep(60)
+            time.sleep(1)
 
     threading.Thread(target=run_scheduler, daemon=True).start()
-    print("Dynamic scheduler started")
 
-# Call this once when app starts
-start_scheduler()

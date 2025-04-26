@@ -1,39 +1,35 @@
-import smtplib # simple mail transfer protocol module
-import os # operating system
-from email.mime.text import MIMEText    # MIME (Multipurpose Internet Mail Extensions) is a standard for formatting email messages.
-from email.mime.multipart import MIMEMultipart # MIMEMultipart is a class that represents a MIME multipart message.
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # send email function, first msg object, then smtplib:
 
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 def send_email(to_email, subject, body):
+    api_key = os.environ.get("SENDGRID_API_KEY")
+    from_email = os.environ.get("EMAIL_USERNAME")  # Use the same from email you verified in SendGrid
 
-    from_email = os.environ.get("EMAIL_USERNAME")
-    password = os.environ.get("EMAIL_PASSWORD")
-
-    if not from_email or not password:
-        print("Email credentials not found in environment variables. Skipping email sending.")
+    if not api_key or not from_email:
+        print("SendGrid credentials not found. Skipping email sending.")
         return
-    
-    # message object
 
-    msg = MIMEMultipart()
-    msg['From'] = from_email
-    msg['To'] = to_email
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(body, 'plain'))
-
-    # send email
+    message = Mail(
+        from_email=from_email,
+        to_emails=to_email,
+        subject=subject,
+        plain_text_content=body
+    )
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(from_email, password)
-        server.send_message(msg)
-        server.quit()
-        print(f"Email sent to {to_email}")
+        sg = SendGridAPIClient(api_key)
+        response = sg.send(message)
+        print(f"Email sent to {to_email}. Status Code: {response.status_code}")
     except Exception as e:
         print(f"Error sending email to {to_email}: {e}")
+
 
 # Welcome email function
 

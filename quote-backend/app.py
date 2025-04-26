@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_cors import CORS
+from services.scheduler import start_scheduler
 from flask_sqlalchemy import SQLAlchemy
 import os
 from models import db
 from dotenv import load_dotenv
+from services.scheduler import start_scheduler
 
 load_dotenv()
 
@@ -75,6 +77,8 @@ def get_all_quotes():
         for q in items:
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
+
+start_scheduler(app)
 
 if __name__ == '__main__':
     app.run(debug=True)
