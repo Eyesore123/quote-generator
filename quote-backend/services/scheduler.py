@@ -7,7 +7,7 @@ import random
 import schedule
 import time
 
-# Create a global lock to ensure only one scheduler thread runs
+# A global lock to ensure only one scheduler thread runs
 scheduler_lock = threading.Lock()
 
 # To store if the scheduler is already running
@@ -60,6 +60,7 @@ def send_quotes_at_hour(app):
         scheduler_running = False
 
 def start_scheduler(app):
+    print(threading.current_thread().name)
     # Ensure the job is scheduled only once
     if not scheduler_lock.locked():
         scheduler_lock.acquire()

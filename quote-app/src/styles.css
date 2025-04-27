@@ -208,6 +208,12 @@ button:disabled {
     }
   }
 
+  @media (min-width: 1200px) {
+    .leftside {
+      margin: 0 200px;
+    }
+  }
+
   .quote-container {
     margin-right: 100px;
     /* margin-top: 50px; */
