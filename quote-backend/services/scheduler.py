@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime
 from models import Subscriber, db
 from data.quotes_data import quotes
@@ -5,15 +6,28 @@ from services.email_service import send_quote_email
 import random
 import schedule
 import time
-import threading
+
+# Create a global lock to ensure only one scheduler thread runs
+scheduler_lock = threading.Lock()
+
+# To store if the scheduler is already running
+scheduler_running = False
 
 def send_quotes_at_hour(app):
-    now = datetime.now()
-    current_hour = now.hour
+    global scheduler_running
 
-    print(f"Running job for hour {current_hour} at {now}")
+    if scheduler_running:
+        print("Scheduler is already running. Skipping this job.")
+        return
+
+    scheduler_running = True
 
     try:
+        now = datetime.now()
+        current_hour = now.hour
+
+        print(f"Running job for hour {current_hour} at {now}")
+
         with app.app_context():
             subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == current_hour).all()
 
@@ -32,7 +46,6 @@ def send_quotes_at_hour(app):
                     all_quotes.extend(quote_list)
 
                 random_quote = random.choice(all_quotes)
-
                 quote_text = random_quote['quote']
                 author = random_quote['author']
 
@@ -42,18 +55,31 @@ def send_quotes_at_hour(app):
 
     except Exception as e:
         print(f"Error sending quotes at hour {current_hour}: {e}")
-
+    
+    finally:
+        scheduler_running = False
 
 def start_scheduler(app):
-    # Run every hour at :00 minutes
-    schedule.every().hour.at(":00").do(send_quotes_at_hour, app)
+    # Ensure the job is scheduled only once
+    if not scheduler_lock.locked():
+        scheduler_lock.acquire()
+        try:
+            if scheduler_running:
+                print("Scheduler already running, skipping start.")
+                return
 
-    print("Scheduler started, will run every hour at :00")
+            schedule.clear("send_quotes_at_hour")  # Clear any previously scheduled jobs
+            schedule.every().hour.at(":00").do(send_quotes_at_hour, app)  # Schedule job to run every hour
 
+            print("Scheduler started, will run every hour at :00")
+        finally:
+            scheduler_lock.release()
+
+    # Start a background thread to run the scheduler
     def run_scheduler():
         while True:
-            schedule.run_pending()
+            schedule.run_pending()  # Run any scheduled jobs
             time.sleep(1)
 
+    # Start the scheduler in a new daemon thread
     threading.Thread(target=run_scheduler, daemon=True).start()
-

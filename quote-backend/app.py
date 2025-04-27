@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_cors import CORS
 from services.scheduler import start_scheduler
-from flask_sqlalchemy import SQLAlchemy
 import os
 from models import db
 from dotenv import load_dotenv
@@ -80,5 +79,8 @@ def get_all_quotes():
 
 start_scheduler(app)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        start_scheduler(app)
+
     app.run(debug=True)

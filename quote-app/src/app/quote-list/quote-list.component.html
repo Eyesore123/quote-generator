@@ -11,9 +11,11 @@
       </div>
       
       <div class="pagination-controls">
+        <button (click)="firstPage()" [disabled]="currentPage === 1">First</button>
         <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
         <span>Page {{ currentPage }}</span>
         <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length">Next</button>
+        <button (click)="lastPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length">Last</button>
       </div>
     </div>
   </div>

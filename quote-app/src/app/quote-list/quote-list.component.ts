@@ -40,6 +40,10 @@ export class QuoteListComponent implements OnInit {
     // Use filteredQuotes instead of allQuotes for pagination
     return this.filteredQuotes.slice(start, start + this.quotesPerPage);
   }
+
+  firstPage(): void {
+    this.currentPage = 1;
+  }
   
   nextPage(): void {
     if (this.currentPage * this.quotesPerPage < this.filteredQuotes.length) {
@@ -51,6 +55,11 @@ export class QuoteListComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  lastPage(): void {
+    const totalPages = Math.ceil(this.filteredQuotes.length / this.quotesPerPage);
+    this.currentPage = totalPages;
   }
   
   applyCategoryFilter(): void {
