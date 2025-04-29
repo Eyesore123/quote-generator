@@ -24,6 +24,8 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
+app.log
 
 # Environment / credentials
 .env

@@ -27,7 +27,6 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 ## What is still under work:
 
 - The backend for API calls to fetch quotes on the server-side is still missing. I will add server-side API calls to fetch quotes when everything else is working, and before that I also have to transfer all the quotes to db.
-- Backend logging is missing.
 - Landing page needs definitely better styling + mobile responsiveness.
 - Need to figure out how to add unsubbing link to email. I've done that with SendGrid and Node.js backend before but I'm not sure how to do it with Flask/Python.
 

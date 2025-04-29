@@ -3,6 +3,8 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from services.scheduler import start_scheduler
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 from models import db
 from dotenv import load_dotenv
 from services.scheduler import start_scheduler
@@ -18,10 +20,25 @@ from routes.subscription_routes import subscription_routes
 # from models import Quote
 import random
 
+# Create a logger
+
+if not os.path.exists('logs'):
+    os.mkdir('logs')
+
+file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=2)
+file_handler.setFormatter(logging.Formatter(
+    '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+))
+file_handler.setLevel(logging.INFO)
+
 # Initialize sql alchemy in here + import migrate
 
 app = Flask(__name__)
 CORS(app, origins="*")
+
+app.logger.addHandler(file_handler)
+app.logger.setLevel(logging.INFO)
+app.logger.info('Quote backend startup')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -77,8 +94,6 @@ def get_all_quotes():
         for q in items:
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
-
-start_scheduler(app)
 
 # Gunicorn does not call __main__, so no need to call it inside if statement when using that. This setup is for Waitress:
 if __name__ == "__main__":
