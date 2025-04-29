@@ -21,14 +21,14 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - Simple Python functions for data manipulation (quotes)
 - Flask commands
 - The limitations of Flask's built-in server, which can cause weird issues on debug mode by running multiple processes of scheduler. If I run the scheduler in debug mode, it will send as many emails as it can within a second. It can also print statements like there was no tomorrow.
+- The differences between different servers: Flask, Gunicorn, Waitress
 - My initial plan for a quote generator was far too restrictive. App needs to store more data to db than I thought would be required to ensure a good user experience. If I had more experience with PostgreSQL and Python, I could've put the quotes inside a db for improved efficiency, but this approach was fine since I could better understand the differences between using a approach where data is stored in an array and a relational database approach. I've used Firebase databases before, so I could've been more intelligent from the start and turned my quote array into a dictionary-like structure with id:s and keys.
 
 ## What is still under work:
 
 - The backend for API calls to fetch quotes on the server-side is still missing. I will add server-side API calls to fetch quotes when everything else is working, and before that I also have to transfer all the quotes to db.
 - Backend logging is missing.
-- Flask-server works, but I will test gunicorn and start using that for production.
-- First and last page buttons for pagination need styling.
+- Landing page needs definitely better styling + mobile responsiveness.
 - Need to figure out how to add unsubbing link to email. I've done that with SendGrid and Node.js backend before but I'm not sure how to do it with Flask/Python.
 
 ![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)

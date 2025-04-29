@@ -6,6 +6,7 @@ import os
 from models import db
 from dotenv import load_dotenv
 from services.scheduler import start_scheduler
+from waitress import serve
 
 load_dotenv()
 
@@ -79,8 +80,15 @@ def get_all_quotes():
 
 start_scheduler(app)
 
+# Gunicorn does not call __main__, so no need to call it inside if statement when using that. This setup is for Waitress:
 if __name__ == "__main__":
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-        start_scheduler(app)
+    start_scheduler(app)
+    serve(app, host="0.0.0.0", port=5000)
+    # app.run(debug=False, use_reloader=False)
 
-    app.run(debug=False, use_reloader=False)
+# This is for Gunicorn:
+
+# start_scheduler(app)
+
+# if __name__ == "__main__":
+#     app.run(debug=False, use_reloader=False)

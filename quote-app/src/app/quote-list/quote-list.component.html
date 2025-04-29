@@ -11,11 +11,15 @@
       </div>
       
       <div class="pagination-controls">
-        <button (click)="firstPage()" [disabled]="currentPage === 1">First</button>
-        <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
-        <span>Page {{ currentPage }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length">Next</button>
-        <button (click)="lastPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length">Last</button>
+        <button (click)="firstPage()" [disabled]="currentPage === 1" style="width: 14px;">
+          <img src="/first.svg" style="filter:invert(1)" alt="First Page" width="20" height="20" />
+        </button>
+        <button (click)="prevPage()" [disabled]="currentPage === 1" style="width: 80px;">Previous</button>
+        <span style="min-width: 80px; display:flex; justify-content:center;">Page {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length" style="width: 80px;">Next</button>
+        <button (click)="lastPage()" [disabled]="currentPage * quotesPerPage >= filteredQuotes.length" style="width: 14px;">
+          <img src="/last.svg" style="filter:invert(1)" alt="Last Page" width="20" height="20" />
+        </button>
       </div>
     </div>
   </div>
