@@ -51,7 +51,7 @@ export class SearchComponent implements OnInit {
     
     // Fetch all quotes from the endpoint
     // Note: Your Flask endpoint returns a direct array, not an object with a 'quotes' property
-    this.http.get<Quote[]>('https://quote-app-opks.onrender.com/quotes')
+    this.http.get<Quote[]>('https://quote-app-backend-nk7c.onrender.com/quotes')
       .subscribe({
         next: (quotes) => {
           // Store the quotes directly since the response is an array
