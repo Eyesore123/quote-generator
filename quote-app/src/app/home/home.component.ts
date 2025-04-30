@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { time } from 'node:console';
 
 @Component({
   selector: 'app-home',
@@ -45,7 +44,9 @@ export class HomeComponent {
       categories: selectedCategories
     };
 
-    this.http.post('http://127.0.0.1:5000/subscribe', body).subscribe({
+    // Url used for testing purposes: http://127.0.0.1:5000/subscribe
+
+    this.http.post('https://quote-app-opks.onrender.com/subscribe', body).subscribe({
       next: res => {
         this.statusMessage = 'Subscribed successfully!';
         this.resetForm();
@@ -59,7 +60,7 @@ export class HomeComponent {
   unsubscribe() {
     const body = { email: this.unsubscribeEmail };
 
-    this.http.post('http://127.0.0.1:5000/unsubscribe', body).subscribe({
+    this.http.post('https://quote-app-opks.onrender.com/unsubscribe', body).subscribe({
       next: res => {
         this.statusMessage = 'Unsubscribed successfully!';
         this.unsubscribeEmail = '';
