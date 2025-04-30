@@ -7,6 +7,12 @@ import random
 import schedule
 import time
 
+# Note: The logging setup is commented out for simplicity. You can uncomment and configure it as needed.
+# import logging 
+# Initialize the logger
+# logger = logging.getLogger(__name__)
+# Then use logger like "logger.info('Your message') or logger.error('Your message')"
+
 # A global lock to ensure only one scheduler thread runs
 scheduler_lock = threading.Lock()
 

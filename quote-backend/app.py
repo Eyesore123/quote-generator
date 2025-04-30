@@ -96,14 +96,14 @@ def get_all_quotes():
     return jsonify(all_quotes)
 
 # Gunicorn does not call __main__, so no need to call it inside if statement when using that. This setup is for Waitress:
-if __name__ == "__main__":
-    start_scheduler(app)
-    serve(app, host="0.0.0.0", port=5000)
-    # app.run(debug=False, use_reloader=False)
+# if __name__ == "__main__":
+#     start_scheduler(app)
+#     serve(app, host="0.0.0.0", port=5000)
+
 
 # This is for Gunicorn:
 
-# start_scheduler(app)
+start_scheduler(app)
 
-# if __name__ == "__main__":
-#     app.run(debug=False, use_reloader=False)
+if __name__ == "__main__":
+    app.run(debug=False, use_reloader=False)
