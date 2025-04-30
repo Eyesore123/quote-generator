@@ -12,7 +12,7 @@ export interface Quote {
   providedIn: 'root'
 })
 export class QuoteService {
-  private apiUrl = 'http://127.0.0.1:5000'; // Flask backend URL
+  private apiUrl = 'https://quote-app-backend-nk7c.onrender.com'; // Flask backend URL
   
   constructor(private http: HttpClient) {}
 

@@ -46,7 +46,7 @@ export class HomeComponent {
 
     // Url used for testing purposes: http://127.0.0.1:5000/subscribe
 
-    this.http.post('https://quote-app-opks.onrender.com/subscribe', body).subscribe({
+    this.http.post('https://quote-app-backend-nk7c.onrender.com/subscribe', body).subscribe({
       next: res => {
         this.statusMessage = 'Subscribed successfully!';
         this.resetForm();
@@ -60,7 +60,7 @@ export class HomeComponent {
   unsubscribe() {
     const body = { email: this.unsubscribeEmail };
 
-    this.http.post('https://quote-app-opks.onrender.com/unsubscribe', body).subscribe({
+    this.http.post('https://quote-app-backend-nk7c.onrender.com/unsubscribe', body).subscribe({
       next: res => {
         this.statusMessage = 'Unsubscribed successfully!';
         this.unsubscribeEmail = '';
