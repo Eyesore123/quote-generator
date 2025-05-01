@@ -22,7 +22,11 @@ import { HomeModule } from './home/home.module';
   imports: [
     BrowserModule,
     CommonModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      scrollPositionRestoration: 'enabled',
+      initialNavigation: 'enabledBlocking'
+    }),
     FormsModule,
     HomeModule
   ],
