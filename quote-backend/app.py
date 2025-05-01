@@ -84,9 +84,18 @@ def get_all_quotes():
     return jsonify(all_quotes)
 
 # === Serve Angular app for all frontend routes ===@app.route('/', defaults={'path': ''})
+@app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return send_from_directory('dist/quote-app/browser/', 'index.html')
+    file_path = os.path.join(app.static_folder, path)
+
+    if path != "" and os.path.exists(file_path) and os.path.isfile(file_path):
+        # If an actual static file is requested, serve it (CSS, JS, images)
+        return send_from_directory(app.static_folder, path)
+    else:
+        # Otherwise always serve index.html (Angular will handle the route)
+        return send_from_directory(app.static_folder, 'index.html')
+
 
 
 # === Start scheduler ===
