@@ -76,7 +76,7 @@ def start_scheduler(app):
                 return
 
             schedule.clear("send_quotes_at_hour")  # Clear any previously scheduled jobs
-            schedule.every().hour.at(":00").do(send_quotes_at_hour, app)  # Schedule job to run every hour
+            schedule.every().hour.do(send_quotes_at_hour, app) # Schedule job to run every hour
 
             print("Scheduler started, will run every hour at :00")
         finally:
@@ -89,4 +89,4 @@ def start_scheduler(app):
             time.sleep(1)
 
     # Start the scheduler in a new daemon thread
-    threading.Thread(target=run_scheduler, daemon=True).start()
+    threading.Thread(target=run_scheduler, daemon=False).start()
