@@ -76,7 +76,9 @@ def start_scheduler(app):
                 return
 
             schedule.clear("send_quotes_at_hour")  # Clear any previously scheduled jobs
-            schedule.every().hour.do(send_quotes_at_hour, app) # Schedule job to run every hour
+            # Schedule job to run every hour, send first immediately
+            schedule.every().hour.do(send_quotes_at_hour, app).tag("send_quotes_at_hour")
+            send_quotes_at_hour(app)
 
             print("Scheduler started, will run every hour at :00")
         finally:
