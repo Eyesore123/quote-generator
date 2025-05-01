@@ -80,7 +80,7 @@ def unsubscribe():
             return jsonify({"message": "Email is required."}), 400
         else:
             # Redirect anyway to confirmation page for cleaner UX
-            return redirect('https://quote-app-opks.onrender.com/unsubscribed')
+            return redirect('https://myquoteapp1.netlify.app/unsubscribed')
 
     subscriber = Subscriber.query.filter_by(email=email).first()
     if subscriber:
@@ -91,7 +91,7 @@ def unsubscribe():
     if request.method == 'POST':
         return jsonify({"message": "You have been unsubscribed successfully."}), 200
     else:
-        return redirect('https://quote-app-opks.onrender.com/unsubscribed')
+        return redirect('https://myquoteapp1.netlify.app/unsubscribed')
 
 # === GET: List quote categories ===
 @subscription_routes.route('/api/quotes/categories', methods=['GET'])
