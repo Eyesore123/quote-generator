@@ -6,6 +6,8 @@ from services.email_service import send_quote_email
 import random
 import schedule
 import time
+import pytz
+from pytz.exceptions import UnknownTimeZoneError
 
 # Note: The logging setup is commented out for simplicity. You can uncomment and configure it as needed.
 # import logging 
@@ -29,22 +31,32 @@ def send_quotes_at_hour(app):
     scheduler_running = True
 
     try:
-        now = datetime.now()
-        current_hour = now.hour
-
-        print(f"Running job for hour {current_hour} at {now}")
+        now_utc = datetime.utcnow()
+        print(f"Running job at UTC hour {now_utc.hour} at {now_utc}")
 
         with app.app_context():
-            subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == current_hour).all()
+            subscribers = db.session.query(Subscriber).all()
 
             for subscriber in subscribers:
+                try:
+                    user_tz = pytz.timezone(subscriber.time_zone)
+                except UnknownTimeZoneError:
+                    print(f"Unknown timezone for {subscriber.email}: {subscriber.time_zone}")
+                    continue
+
+                user_now = datetime.now(user_tz)
+                user_current_hour = user_now.hour
+
+                if user_current_hour != subscriber.send_hour:
+                    continue
+
                 if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
                     continue
 
-                if subscriber.frequency == 'weekly' and now.weekday() != 0:  # Monday only
+                if subscriber.frequency == 'weekly' and user_now.weekday() != 0:  # Monday only
                     continue
 
-                if subscriber.frequency == 'monthly' and now.day != 1:  # 1st day only
+                if subscriber.frequency == 'monthly' and user_now.day != 1:  # 1st day only
                     continue
 
                 all_quotes = []
@@ -57,13 +69,14 @@ def send_quotes_at_hour(app):
 
                 send_quote_email(subscriber.email, quote_text, author)
 
-                print(f"Sent quote to {subscriber.email} at {now}")
+                print(f"Sent quote to {subscriber.email} at their local hour {user_current_hour} ({subscriber.time_zone})")
 
     except Exception as e:
-        print(f"Error sending quotes at hour {current_hour}: {e}")
-    
+        print(f"Error sending quotes: {e}")
+
     finally:
         scheduler_running = False
+
 
 def start_scheduler(app):
     print(threading.current_thread().name)

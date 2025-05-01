@@ -7,7 +7,7 @@ class Subscriber(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     send_hour = db.Column(db.Integer, default=12)
     categories = db.Column(db.String(255), nullable=False)
-    time_zone = db.Column(db.String(64), nullable=True)
+    time_zone = db.Column(db.String(64), nullable=False)
     frequency = db.Column(db.String(20), default='daily')
 
     def __repr__(self):
