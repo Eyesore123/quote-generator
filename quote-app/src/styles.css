@@ -31,6 +31,12 @@ nav ul {
     width: 100%;
 }
 
+/* nav a:hover {
+  background-color: #444;
+  border-radius: 5px;
+} */
+
+
 main {
     flex: 1;
     display: flex;
@@ -364,3 +370,37 @@ button:disabled {
     align-items: center;
     margin-top: 5rem;
   }
+
+  /* Status Message Styles */
+.status-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin: 1rem auto;
+  max-width: 600px;
+  width: 90%;
+  font-size: 1rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Variants */
+.status-success {
+  background-color: #28a745; /* Green */
+}
+
+.status-error {
+  background-color: #dc3545; /* Red */
+}
+
+.status-info {
+  background-color: #6c757d; /* Gray-blue */
+}
+
+.status-message::before {
+  margin-right: 8px;
+}

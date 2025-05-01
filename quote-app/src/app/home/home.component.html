@@ -12,6 +12,17 @@
     <div class="rightside">
         <div class="form-container">
             <h3>Subscribe for a quote!</h3>
+
+            <div *ngIf="statusMessage"
+                class="status-message"
+                [ngClass]="{
+                'status-success': statusMessage.type === 'success',
+                'status-error': statusMessage.type === 'error',
+                'status-info': statusMessage.type === 'info'
+                }">
+                {{ statusMessage.text }}
+            </div>
+
             <form id="quote-subscribe-form" (ngSubmit)="subscribe()">
                 <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
                 <select [(ngModel)]="frequency" name="frequency">
@@ -24,7 +35,7 @@
                     <ng-container *ngFor="let h of hours">
                       <option [value]="h">{{ h }}:00</option>
                     </ng-container>
-                  </select>
+                </select>
                 
                 <div class="categories-container">
                     <p>Select categories:</p>
@@ -54,12 +65,12 @@
                 
                 <button type="submit">Subscribe</button>
             </form>
+
             <h3>Want to unsubscribe from a daily quote?</h3>
             <form id="unsubscribe-form" (ngSubmit)="unsubscribe()">
                 <input type="email" [(ngModel)]="unsubscribeEmail" name="unsubscribeEmail" placeholder="Enter your email to unsubscribe" required>
                 <button type="submit">Unsubscribe</button>
             </form>
-            <p id="subscribe-status">{{statusMessage}}</p>
         </div>
     </div>
 </div>

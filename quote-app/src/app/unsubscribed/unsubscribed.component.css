@@ -1,0 +1,16 @@
+.unsubscribed-container {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  
+  .unsubscribed-container h1 {
+    color: #333;
+  }
+  
+  .unsubscribed-container a {
+    margin-top: 1rem;
+    display: inline-block;
+    text-decoration: none;
+    color: #007BFF;
+  }
+  

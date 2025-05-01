@@ -17,7 +17,7 @@ export class HomeComponent {
   frequency: string = 'daily';
   sendHour: number = 12;
   unsubscribeEmail: string = '';
-  statusMessage: string = '';
+  statusMessage: { text: string, type: 'success' | 'error' | 'info' } | null = null;
   hours = Array.from({ length: 24 }, (_, i) => i);
 
   categorySelections = {
@@ -46,13 +46,14 @@ export class HomeComponent {
 
     // Url used for testing purposes: http://127.0.0.1:5000/subscribe
 
-    this.http.post('https://quote-app-backend-nk7c.onrender.com/subscribe', body).subscribe({
+    this.http.post<any>('https://quote-app-backend-nk7c.onrender.com/subscribe', body).subscribe({
       next: res => {
-        this.statusMessage = 'Subscribed successfully!';
+        this.statusMessage = { text: res.message, type: 'success' };
         this.resetForm();
       },
       error: err => {
-        this.statusMessage = 'Subscription failed. Please try again.';
+        this.statusMessage = { text: 'Subscription failed. Please try again.', type: 'error' };
+
       }
     });
   }
@@ -60,13 +61,13 @@ export class HomeComponent {
   unsubscribe() {
     const body = { email: this.unsubscribeEmail };
 
-    this.http.post('https://quote-app-backend-nk7c.onrender.com/unsubscribe', body).subscribe({
+    this.http.post<any>('https://quote-app-backend-nk7c.onrender.com/unsubscribe', body).subscribe({
       next: res => {
-        this.statusMessage = 'Unsubscribed successfully!';
+        this.statusMessage = res.message;
         this.unsubscribeEmail = '';
       },
       error: err => {
-        this.statusMessage = 'Unsubscription failed. Please try again.';
+        this.statusMessage = { text: 'Unsubscription failed. Please try again.', type: 'error' };
       }
     });
   }
