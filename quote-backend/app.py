@@ -97,9 +97,9 @@ def get_all_quotes():
 
 # Serve the Angular app's index.html file for all routes
 
-@app.route('/<path:path>')
-def catch_all(path):
-    return send_from_directory('dist/quote-app', path)
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return send_from_directory('dist/quote-app', path)
 
 # Gunicorn does not call __main__, so no need to call it inside if statement when using that. This setup is for Waitress:
 # if __name__ == "__main__":
