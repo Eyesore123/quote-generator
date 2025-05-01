@@ -1,11 +1,6 @@
-# app.py
-
-from flask import Flask, jsonify, send_from_directory, redirect
+from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_cors import CORS
-from services.scheduler import start_scheduler
-from models import db
-from routes.subscription_routes import subscription_routes
 from dotenv import load_dotenv
 from waitress import serve
 import os
@@ -13,16 +8,18 @@ import logging
 from logging.handlers import RotatingFileHandler
 import random
 
-# Load environment variables
+# === Load environment variables ===
 load_dotenv()
 
-# === Initialize app and config ===
+# === Initialize app ===
 app = Flask(__name__, static_folder='dist/quote-app')
 CORS(app, origins="*")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# === Setup database and migration ===
+from models import db
 db.init_app(app)
 migrate = Migrate(app, db)
 
@@ -44,7 +41,10 @@ app.logger.info('Quote backend startup')
 from data.quotes_data import quotes
 
 # === Register Blueprints ===
+from routes.subscription_routes import subscription_routes
+from routes.scheduler_routes import scheduler_routes
 app.register_blueprint(subscription_routes)
+app.register_blueprint(scheduler_routes)
 
 # === Debugging helpers (quote counts + duplicates) ===
 all_quotes_check = []
@@ -83,7 +83,7 @@ def get_all_quotes():
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
 
-# === Serve Angular app for all frontend routes ===@app.route('/', defaults={'path': ''})
+# === Serve Angular app for all frontend routes ===
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
@@ -92,15 +92,14 @@ def catch_all(path):
     if path != "" and os.path.exists(file_path) and os.path.isfile(file_path):
         return send_from_directory(app.static_folder, path)
     else:
-        # Serve index.html for Angular routes like /unsubscribed, /search, etc.
         return send_from_directory(app.static_folder, 'index.html')
 
-
 # === Start scheduler ===
+from services.scheduler import start_scheduler
 start_scheduler(app)
 
 # === Server startup ===
 if __name__ == "__main__":
     app.run(debug=False, use_reloader=False)
-    # If using Waitress in production, uncomment this instead:
+    # For production (waitress):
     # serve(app, host="0.0.0.0", port=5000)
