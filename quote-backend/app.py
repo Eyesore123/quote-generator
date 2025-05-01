@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_migrate import Migrate
 from flask_cors import CORS
 from services.scheduler import start_scheduler
@@ -94,6 +94,12 @@ def get_all_quotes():
         for q in items:
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
+
+# Serve the Angular app's index.html file for all routes
+
+@app.route('/<path:path>')
+def catch_all(path):
+    return send_from_directory('dist/quote-app', 'index.html')
 
 # Gunicorn does not call __main__, so no need to call it inside if statement when using that. This setup is for Waitress:
 # if __name__ == "__main__":
