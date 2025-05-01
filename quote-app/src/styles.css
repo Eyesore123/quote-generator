@@ -242,13 +242,13 @@ button:disabled {
     justify-content: center;
     align-items: center;
     gap: 40px;
-    padding: 2rem;
+    padding: 1rem;
     background: #f9f9f9;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     max-width: 1100px;
     min-width: 600px;
-    max-height: 700px;
+    min-height: 780px;
     margin: 2rem;
   }
 
@@ -381,7 +381,7 @@ button:disabled {
   border-radius: 12px;
   margin: 1rem auto;
   max-width: 600px;
-  width: 90%;
+  width: 70%;
   font-size: 1rem;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

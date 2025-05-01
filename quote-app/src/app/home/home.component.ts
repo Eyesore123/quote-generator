@@ -50,9 +50,11 @@ export class HomeComponent {
       next: res => {
         this.statusMessage = { text: res.message, type: 'success' };
         this.resetForm();
+        this.clearStatusMessage();
       },
       error: err => {
         this.statusMessage = { text: 'Subscription failed. Please try again.', type: 'error' };
+        this.clearStatusMessage();
 
       }
     });
@@ -63,13 +65,21 @@ export class HomeComponent {
 
     this.http.post<any>('https://quote-app-backend-nk7c.onrender.com/unsubscribe', body).subscribe({
       next: res => {
-        this.statusMessage = res.message;
+        this.statusMessage = { text: res.message, type: 'success' };
         this.unsubscribeEmail = '';
+        this.clearStatusMessage();
       },
       error: err => {
         this.statusMessage = { text: 'Unsubscription failed. Please try again.', type: 'error' };
+        this.clearStatusMessage();
       }
     });
+  }
+
+  clearStatusMessage() {
+    setTimeout(() => {
+      this.statusMessage = null;
+    }, 5000);
   }
 
   resetForm() {

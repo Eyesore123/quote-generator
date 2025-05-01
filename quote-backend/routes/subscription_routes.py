@@ -66,39 +66,31 @@ def subscribe():
     send_welcome_email(email)
     return jsonify({"message": "You have successfully subscribed to our newsletter!"}), 201
 
-# === POST: Unsubscribe via email from the form ===
-@subscription_routes.route('/unsubscribe', methods=['POST'])
+# === Handles both GET (via link) and POST (via form) to unsubscribe ===
+@subscription_routes.route('/unsubscribe', methods=['GET', 'POST'])
 def unsubscribe():
-    data = request.get_json()
-    email = data.get('email')
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data.get('email')
+    else:  # GET method
+        email = request.args.get('email')
 
     if not email:
-        return jsonify({"message": "Email is required."}), 400
+        if request.method == 'POST':
+            return jsonify({"message": "Email is required."}), 400
+        else:
+            # Redirect anyway to confirmation page for cleaner UX
+            return redirect('https://quote-app-opks.onrender.com/unsubscribed')
 
     subscriber = Subscriber.query.filter_by(email=email).first()
     if subscriber:
         db.session.delete(subscriber)
         db.session.commit()
-        return jsonify({"message": "Unsubscribed successfully."}), 200
+
+    # Whether they were subscribed or not, we redirect/confirm
+    if request.method == 'POST':
+        return jsonify({"message": "You have been unsubscribed successfully."}), 200
     else:
-        return jsonify({"message": "You were not subscribed to our newsletter."}), 200
-
-# === GET: Unsubscribe via email link from email ===
-@subscription_routes.route('/unsubscribe', methods=['GET'])
-def unsubscribe_via_link():
-    email = request.args.get('email')
-
-    if not email:
-        return jsonify({"message": "Email is required."}), 400
-
-    subscriber = Subscriber.query.filter_by(email=email).first()
-    if subscriber:
-        db.session.delete(subscriber)
-        db.session.commit()
-        # Redirect to a confirmation page
-        return redirect('https://quote-app-opks.onrender.com/unsubscribed')
-    else:
-        # Redirect to a confirmation page in any case
         return redirect('https://quote-app-opks.onrender.com/unsubscribed')
 
 # === GET: List quote categories ===
