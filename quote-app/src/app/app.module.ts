@@ -7,7 +7,7 @@ import { RandomQuoteComponent } from './random-quote/random-quote.component';
 import { HomeComponent } from './home/home.component';
 import { UnsubscribedComponent } from './unsubscribed/unsubscribed.component';
 import { routes } from './app.routes';  // Import the routes configuration
-import { CommonModule } from '@angular/common';
+import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
 
@@ -23,12 +23,15 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     CommonModule,
     RouterModule.forRoot(routes, {
-      useHash: false,
+      useHash: true,
       scrollPositionRestoration: 'enabled',
       initialNavigation: 'enabledBlocking'
     }),
     FormsModule,
     HomeModule
+  ],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy } // Use HashLocationStrategy for hash-based routing
   ],
   bootstrap: [AppComponent]
 })
