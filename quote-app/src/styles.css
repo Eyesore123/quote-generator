@@ -379,7 +379,7 @@ button:disabled {
   text-align: center;
   padding: 15px 20px;
   border-radius: 12px;
-  margin: 1rem auto;
+  margin: auto;
   max-width: 600px;
   width: 70%;
   font-size: 1rem;
