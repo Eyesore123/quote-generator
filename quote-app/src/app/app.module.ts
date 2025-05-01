@@ -23,15 +23,11 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     CommonModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
       scrollPositionRestoration: 'enabled',
       initialNavigation: 'enabledBlocking'
     }),
     FormsModule,
     HomeModule
-  ],
-  providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy } // Use HashLocationStrategy for hash-based routing
   ],
   bootstrap: [AppComponent]
 })

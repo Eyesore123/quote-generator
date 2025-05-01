@@ -90,12 +90,10 @@ def catch_all(path):
     file_path = os.path.join(app.static_folder, path)
 
     if path != "" and os.path.exists(file_path) and os.path.isfile(file_path):
-        # If an actual static file is requested, serve it (CSS, JS, images)
         return send_from_directory(app.static_folder, path)
     else:
-        # Otherwise always serve index.html (Angular will handle the route)
+        # Serve index.html for Angular routes like /unsubscribed, /search, etc.
         return send_from_directory(app.static_folder, 'index.html')
-
 
 
 # === Start scheduler ===
