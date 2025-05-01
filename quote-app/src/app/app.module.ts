@@ -23,7 +23,7 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     CommonModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
+      useHash: false,
       scrollPositionRestoration: 'enabled',
       initialNavigation: 'enabledBlocking'
     }),
