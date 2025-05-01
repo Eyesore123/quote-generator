@@ -83,17 +83,22 @@ def get_all_quotes():
             all_quotes.append({**q, "category": category})
     return jsonify(all_quotes)
 
-# # === Serve Angular app for all frontend routes ===
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     file_path = os.path.join(app.static_folder, path)
+# === Serve Angular app for all frontend routes ===
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    # Serve index.html for all routes that are not backend-related
+    if path != "" and not path.startswith("api"):  # Prevent serving index for backend API routes
+        file_path = os.path.join(app.static_folder, path)
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return send_from_directory(app.static_folder, path)
+        else:
+            # Serve the index.html for all frontend routes (Angular's routing will handle them)
+            return send_from_directory(app.static_folder, 'index.html')
 
-#     if path != "" and os.path.exists(file_path) and os.path.isfile(file_path):
-#         return send_from_directory(app.static_folder, path)
-#     else:
-#         # Serve index.html for Angular routes like /unsubscribed, /search, etc.
-#         return send_from_directory(app.static_folder, 'index.html')
+    # Otherwise, handle backend routes (e.g., API routes, /unsubscribed)
+    return 'Backend logic or API response'
+
 
 # === Start scheduler ===
 start_scheduler(app)
