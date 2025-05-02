@@ -24,39 +24,36 @@ scheduler_running = False
 def send_quotes_at_hour(app):
     global scheduler_running
 
+    now = datetime.now()
+    current_hour = now.hour
+
+    print(f"[{now}] Triggered send_quotes_at_hour() — Current UTC hour: {current_hour}")
+
     if scheduler_running:
-        print("Scheduler is already running. Skipping this job.")
+        print(f"[{now}] Scheduler is already running. Skipping this job.")
         return
 
     scheduler_running = True
 
     try:
-        now_utc = datetime.utcnow()
-        print(f"Running job at UTC hour {now_utc.hour} at {now_utc}")
-
         with app.app_context():
-            subscribers = db.session.query(Subscriber).all()
+            subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == current_hour).all()
+
+            print(f"[{now}] Fetched {len(subscribers)} subscribers with send_hour = {current_hour}")
 
             for subscriber in subscribers:
-                try:
-                    user_tz = pytz.timezone(subscriber.time_zone)
-                except UnknownTimeZoneError:
-                    print(f"Unknown timezone for {subscriber.email}: {subscriber.time_zone}")
-                    continue
-
-                user_now = datetime.now(user_tz)
-                user_current_hour = user_now.hour
-
-                if user_current_hour != subscriber.send_hour:
-                    continue
+                print(f"[{now}] Checking subscriber {subscriber.email} — frequency: {subscriber.frequency}")
 
                 if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
+                    print(f"[{now}] Skipping {subscriber.email} — invalid frequency: {subscriber.frequency}")
                     continue
 
-                if subscriber.frequency == 'weekly' and user_now.weekday() != 0:  # Monday only
+                if subscriber.frequency == 'weekly' and now.weekday() != 0:
+                    print(f"[{now}] Skipping {subscriber.email} — today is not Monday")
                     continue
 
-                if subscriber.frequency == 'monthly' and user_now.day != 1:  # 1st day only
+                if subscriber.frequency == 'monthly' and now.day != 1:
+                    print(f"[{now}] Skipping {subscriber.email} — today is not 1st of month")
                     continue
 
                 all_quotes = []
@@ -68,40 +65,41 @@ def send_quotes_at_hour(app):
                 author = random_quote['author']
 
                 send_quote_email(subscriber.email, quote_text, author)
-
-                print(f"Sent quote to {subscriber.email} at their local hour {user_current_hour} ({subscriber.time_zone})")
+                print(f"[{now}] Sent quote to {subscriber.email}")
 
     except Exception as e:
-        print(f"Error sending quotes: {e}")
+        print(f"[{now}] Error sending quotes at hour {current_hour}: {e}")
 
     finally:
         scheduler_running = False
+        print(f"[{now}] Finished send_quotes_at_hour()")
 
 
 def start_scheduler(app):
-    print(threading.current_thread().name)
-    # Ensure the job is scheduled only once
+    print(f"[{datetime.now()}] MainThread — Starting scheduler")
+
     if not scheduler_lock.locked():
         scheduler_lock.acquire()
         try:
             if scheduler_running:
-                print("Scheduler already running, skipping start.")
+                print(f"[{datetime.now()}] Scheduler already running, skipping start.")
                 return
 
-            schedule.clear("send_quotes_at_hour")  # Clear any previously scheduled jobs
-            # Schedule job to run every hour, send first immediately
+            schedule.clear("send_quotes_at_hour")
             schedule.every().hour.do(send_quotes_at_hour, app).tag("send_quotes_at_hour")
+            print(f"[{datetime.now()}] Scheduled send_quotes_at_hour() to run every hour")
+            
+            # Trigger first run immediately
             send_quotes_at_hour(app)
 
-            print("Scheduler started, will run every hour at :00")
         finally:
             scheduler_lock.release()
 
-    # Start a background thread to run the scheduler
     def run_scheduler():
+        print(f"[{datetime.now()}] Scheduler background thread started")
         while True:
-            schedule.run_pending()  # Run any scheduled jobs
+            schedule.run_pending()
             time.sleep(1)
 
-    # Start the scheduler in a new daemon thread
     threading.Thread(target=run_scheduler, daemon=False).start()
+
