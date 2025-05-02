@@ -6,15 +6,8 @@ from services.email_service import send_quote_email
 import random
 import schedule
 import time
-from datetime import timezone, datetime, timedelta
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
-
-# Note: The logging setup is commented out for simplicity. You can uncomment and configure it as needed.
-# import logging 
-# Initialize the logger
-# logger = logging.getLogger(__name__)
-# Then use logger like "logger.info('Your message') or logger.error('Your message')"
 
 # A global lock to ensure only one scheduler thread runs
 scheduler_lock = threading.Lock()
@@ -25,11 +18,9 @@ scheduler_running = False
 def send_quotes_at_hour(app):
     global scheduler_running
 
-    now_utc = datetime.now(timezone.utc)
-    finland_time = now_utc + timedelta(hours=3)
-    current_hour = finland_time.hour
+    now_utc = datetime.now(pytz.utc)
 
-    print(f"[{now_utc}] Triggered send_quotes_at_hour() — Finland local hour: {current_hour} (UTC hour: {now_utc.hour})")
+    print(f"[{now_utc}] Triggered send_quotes_at_hour() — Current UTC hour: {now_utc.hour}")
 
     if scheduler_running:
         print(f"[{now_utc}] Scheduler is already running. Skipping this job.")
@@ -39,42 +30,68 @@ def send_quotes_at_hour(app):
 
     try:
         with app.app_context():
-            subscribers = db.session.query(Subscriber).filter(Subscriber.send_hour == current_hour).all()
+            subscribers = Subscriber.query.all()
 
-            print(f"[{now_utc}] Fetched {len(subscribers)} subscribers with send_hour = {current_hour}")
+            print(f"[{now_utc}] Fetched {len(subscribers)} total subscribers")
+
+            sent_count = 0
 
             for subscriber in subscribers:
-                print(f"[{now_utc}] Checking subscriber {subscriber.email} — frequency: {subscriber.frequency}")
+                try:
+                    user_tz = pytz.timezone(subscriber.time_zone)
+                    now_user_time = now_utc.astimezone(user_tz)
 
-                if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
-                    print(f"[{now_utc}] Skipping {subscriber.email} — invalid frequency: {subscriber.frequency}")
-                    continue
+                    if now_user_time.hour != subscriber.send_hour:
+                        continue  # Skip if not their chosen hour
 
-                if subscriber.frequency == 'weekly' and now_utc.weekday() != 0:
-                    print(f"[{now_utc}] Skipping {subscriber.email} — today is not Monday")
-                    continue
+                    print(f"[{now_utc}] Checking subscriber {subscriber.email} — "
+                          f"Local hour {now_user_time.hour} "
+                          f"(timezone: {subscriber.time_zone}) — frequency: {subscriber.frequency}")
 
-                if subscriber.frequency == 'monthly' and now_utc.day != 1:
-                    print(f"[{now_utc}] Skipping {subscriber.email} — today is not 1st of month")
-                    continue
+                    # Validate frequency rules
+                    if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
+                        print(f"[{now_utc}] Skipping {subscriber.email} — invalid frequency: {subscriber.frequency}")
+                        continue
 
-                all_quotes = []
-                for quote_list in quotes.values():
-                    all_quotes.extend(quote_list)
+                    if subscriber.frequency == 'weekly' and now_user_time.weekday() != 0:
+                        print(f"[{now_utc}] Skipping {subscriber.email} — today is not Monday")
+                        continue
 
-                random_quote = random.choice(all_quotes)
-                quote_text = random_quote['quote']
-                author = random_quote['author']
+                    if subscriber.frequency == 'monthly' and now_user_time.day != 1:
+                        print(f"[{now_utc}] Skipping {subscriber.email} — today is not 1st of month")
+                        continue
 
-                send_quote_email(subscriber.email, quote_text, author)
-                print(f"[{now_utc}] Sent quote to {subscriber.email}")
+                    # Gather and send random quote from selected categories
+                    selected_categories = subscriber.categories.split(',')
+                    selected_quotes = []
+
+                    for category in selected_categories:
+                        category = category.strip()
+                        if category in quotes:
+                            selected_quotes.extend(quotes[category])
+
+                    if not selected_quotes:
+                        print(f"[{now_utc}] Skipping {subscriber.email} — no valid quotes in selected categories")
+                        continue
+
+                    random_quote = random.choice(selected_quotes)
+                    quote_text = random_quote['quote']
+                    author = random_quote['author']
+
+                    send_quote_email(subscriber.email, quote_text, author)
+                    print(f"[{now_utc}] ✅ Sent quote to {subscriber.email}")
+
+                    sent_count += 1
+
+                except UnknownTimeZoneError:
+                    print(f"[{now_utc}] ⚠️ Skipping {subscriber.email} — Invalid timezone: {subscriber.time_zone}")
 
     except Exception as e:
-        print(f"[{now_utc}] Error sending quotes at hour {current_hour}: {e}")
+        print(f"[{now_utc}] ❌ Error sending quotes: {e}")
 
     finally:
         scheduler_running = False
-        print(f"[{now_utc}] Finished send_quotes_at_hour()")
+        print(f"[{now_utc}] Finished send_quotes_at_hour() — Emails sent: {sent_count}")
 
 
 def start_scheduler(app):
@@ -90,7 +107,7 @@ def start_scheduler(app):
             schedule.clear("send_quotes_at_hour")
             schedule.every().hour.do(send_quotes_at_hour, app).tag("send_quotes_at_hour")
             print(f"[{datetime.now()}] Scheduled send_quotes_at_hour() to run every hour")
-            
+
             # Trigger first run immediately
             send_quotes_at_hour(app)
 
@@ -104,4 +121,3 @@ def start_scheduler(app):
             time.sleep(1)
 
     threading.Thread(target=run_scheduler, daemon=False).start()
-
