@@ -30,7 +30,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 
 - I plan to transfer all the quotes to db. Quotes are currently stored in a json file and served on the client-side, but fetched using backend urls.
 - Landing page definitely needs better styling + mobile responsiveness.
-- I will try using cron jobs to wake up Render backend before it's time to send scheduled emails so I can use the free service.
+- I tried using free cron jobs to wake up Render backend before it was time to send scheduled emails so I could use the free service, but the Render backend would not wake up. I noticed that bash scripts make the backend wake up (because there's no timeout), so I'm probably going to use a bash script on my Raspberry Pi to send regular triggers so the backend stays awake.
 
 ![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)
 

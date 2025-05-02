@@ -19,7 +19,6 @@ def send_quotes_at_hour(app):
     global scheduler_running
 
     now_utc = datetime.now(pytz.utc)
-
     print(f"[{now_utc}] Triggered send_quotes_at_hour() — Current UTC hour: {now_utc.hour}")
 
     if scheduler_running:
@@ -27,13 +26,16 @@ def send_quotes_at_hour(app):
         return
 
     scheduler_running = True
-
-    # Initialize sent_count before using it
     sent_count = 0
 
     try:
         with app.app_context():
-            subscribers = Subscriber.query.all()
+            try:
+                subscribers = Subscriber.query.all()
+            except Exception as e:
+                print(f"[{now_utc}] ❌ Database error fetching subscribers: {e}")
+                db.session.remove()
+                return
 
             print(f"[{now_utc}] Fetched {len(subscribers)} total subscribers")
 
@@ -43,26 +45,21 @@ def send_quotes_at_hour(app):
                     now_user_time = now_utc.astimezone(user_tz)
 
                     if now_user_time.hour != subscriber.send_hour:
-                        continue  # Skip if not their chosen hour
+                        continue
 
                     print(f"[{now_utc}] Checking subscriber {subscriber.email} — "
-                          f"Local hour {now_user_time.hour} "
-                          f"(timezone: {subscriber.time_zone}) — frequency: {subscriber.frequency}")
+                          f"Local hour {now_user_time.hour} (timezone: {subscriber.time_zone}) "
+                          f"— frequency: {subscriber.frequency}")
 
-                    # Validate frequency rules
                     if subscriber.frequency not in ['daily', 'weekly', 'monthly']:
                         print(f"[{now_utc}] Skipping {subscriber.email} — invalid frequency: {subscriber.frequency}")
                         continue
 
                     if subscriber.frequency == 'weekly' and now_user_time.weekday() != 0:
-                        print(f"[{now_utc}] Skipping {subscriber.email} — today is not Monday")
                         continue
-
                     if subscriber.frequency == 'monthly' and now_user_time.day != 1:
-                        print(f"[{now_utc}] Skipping {subscriber.email} — today is not 1st of month")
                         continue
 
-                    # Gather and send random quote from selected categories
                     selected_categories = subscriber.categories.split(',')
                     selected_quotes = []
 
@@ -76,24 +73,23 @@ def send_quotes_at_hour(app):
                         continue
 
                     random_quote = random.choice(selected_quotes)
-                    quote_text = random_quote['quote']
-                    author = random_quote['author']
-
-                    send_quote_email(subscriber.email, quote_text, author)
+                    send_quote_email(subscriber.email, random_quote['quote'], random_quote['author'])
                     print(f"[{now_utc}] ✅ Sent quote to {subscriber.email}")
 
                     sent_count += 1
 
                 except UnknownTimeZoneError:
                     print(f"[{now_utc}] ⚠️ Skipping {subscriber.email} — Invalid timezone: {subscriber.time_zone}")
+                except Exception as e:
+                    print(f"[{now_utc}] ❌ Error processing {subscriber.email}: {e}")
+                    db.session.remove()  # Reset connection/session for next subscriber
 
     except Exception as e:
-        print(f"[{now_utc}] ❌ Error sending quotes: {e}")
+        print(f"[{now_utc}] ❌ Fatal error in send_quotes_at_hour: {e}")
 
     finally:
         scheduler_running = False
         print(f"[{now_utc}] Finished send_quotes_at_hour() — Emails sent: {sent_count}")
-
 
 def start_scheduler(app):
     print(f"[{datetime.now()}] MainThread — Starting scheduler")
