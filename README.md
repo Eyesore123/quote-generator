@@ -11,7 +11,7 @@ I will later try adding new functionalities. Sub and unsub functions and email s
 
 Backend and frontend are in different folders and run separately. Frontend is hosted on Netlify. Backend is hosted on Render.com. Postgres database is hosted on Neon.
 
-PS. Angular has been a bit hard for me to learn with React background. So many files... and all those module imports... I think I get the gist of it but there are still parts that are quite hard to fathom. Perhaps it'll get easier over time.
+PS. Angular has been a bit hard for me to learn with React background. So many files... and all those module imports... I think I get the gist of it but there are still parts that are quite hard to fathom. You need to be a goddamn wizard to get all the modules, imports and server configurations to work correctly. Perhaps it'll get easier over time, but I would rather use React for future projects with less headache.
 
 ## What I've learned during this project:
 
@@ -20,7 +20,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - How routing works in Angular
 - Simple Python functions for data manipulation (quotes)
 - Flask commands
-- The limitations of Flask's built-in server, which can cause weird issues on debug mode by running multiple processes of scheduler. If I run the scheduler in debug mode, it will send as many emails as it can within a second. It can also print statements like there was no tomorrow.
+- The limitations of Flask's built-in server, which can cause weird issues on debug mode by running multiple processes of scheduler. If I run the scheduler in debug mode, it will send as many emails as it can within a second. It can also print statements like there was no tomorrow. It's similar to how useEffect can run multiple times in React.
 - The differences between different servers: Flask, Gunicorn, Waitress
 - How to deploy backend API using Flask
 - Render.com is not very easy to use when you're working with a single-page application and want to redirect routes through index file. I couldn't get the frontend to work with Render, then I switched to Netlify and boom! - it worked immediately. Setting up the SPA configurations for the server can be a bit tricky.
@@ -30,8 +30,7 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 
 - I plan to transfer all the quotes to db. Quotes are currently stored in a json file and served on the client-side, but fetched using backend urls.
 - Landing page definitely needs better styling + mobile responsiveness.
-- I will try using cron jobs before scheduled email sends to trigger the Render backend so I can use the free service.
-- I still need to handle the time zones correctly so the backend calculates the correct email send times for each user.
+- I will try using cron jobs to wake up Render backend before it's time to send scheduled emails so I can use the free service.
 
 ![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)
 

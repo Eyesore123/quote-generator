@@ -28,13 +28,14 @@ def send_quotes_at_hour(app):
 
     scheduler_running = True
 
+    # Initialize sent_count before using it
+    sent_count = 0
+
     try:
         with app.app_context():
             subscribers = Subscriber.query.all()
 
             print(f"[{now_utc}] Fetched {len(subscribers)} total subscribers")
-
-            sent_count = 0
 
             for subscriber in subscribers:
                 try:
