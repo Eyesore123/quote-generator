@@ -24,13 +24,12 @@ PS. Angular has been a bit hard for me to learn with React background. So many f
 - The differences between different servers: Flask, Gunicorn, Waitress
 - How to deploy backend API using Flask
 - Render.com is not very easy to use when you're working with a single-page application and want to redirect routes through index file. I couldn't get the frontend to work with Render, then I switched to Netlify and boom! - it worked immediately. Setting up the SPA configurations for the server can be a bit tricky.
+- I tried using free cron jobs to wake up Render backend before it was time to send scheduled emails so I could use the free service, but the Render backend would not wake up. I noticed that bash scripts work for this purpose (because there's no timeout in request), so I'm using a bash script on my Raspberry Pi to send regular triggers so the backend stays awake.
 - My initial plan for quote generator was far too restrictive. App needs to store more data to db than I thought would be required to ensure a good user experience. If I had more experience with PostgreSQL and Python, I could've put the quotes inside a db for improved efficiency, but this approach was fine too since I was better able to understand the differences between using a approach where data is stored in an array and a relational database approach. I've used Firebase databases before, so I could've been more intelligent from the start and turned my quote array into a dictionary-like structure with id:s and keys, but this works too since it's not a lot of data.
 
 ## What is still under work:
 
-- I plan to transfer all the quotes to db. Quotes are currently stored in a json file and served on the client-side, but fetched using backend urls.
-- Landing page definitely needs better styling + mobile responsiveness.
-- I tried using free cron jobs to wake up Render backend before it was time to send scheduled emails so I could use the free service, but the Render backend would not wake up. I noticed that bash scripts make the backend wake up (because there's no timeout), so I'm probably going to use a bash script on my Raspberry Pi to send regular triggers so the backend stays awake.
+- I had a plan of transferring all the quotes to db but I'm not sure I'll do it since there really isn't any benefit to it. Quotes are currently stored in a json file and served on the client-side, but fetched using backend urls.
 
 ![4](https://github.com/user-attachments/assets/bff4dc16-eb48-417c-9c12-35a4f62d6272)
 

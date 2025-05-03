@@ -9,6 +9,13 @@ body {
     height: 100%;
 }
 
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 app-root {
     display: flex;
     flex-direction: column;
@@ -158,7 +165,6 @@ span {
     display: grid;
     grid-template-columns: 3fr 2fr;
     width: 100%;
-    gap: 20px;
   }
 
   /* Select styling */
@@ -254,7 +260,8 @@ button:disabled {
 
   @media (max-width: 768px) {
     .form-container {
-      min-width: 300px;
+      min-width: 320px;
+      max-width: 320px;
     }
   }
   
@@ -403,4 +410,138 @@ button:disabled {
 
 .status-message::before {
   margin-right: 8px;
+}
+
+/* Mobile styles */
+
+@media (max-width: 768px) {
+  blockquote {
+    min-width: auto;
+    width: 100%;
+    height: auto;
+    padding: 0 10px;
+    margin: auto;
+  }
+
+  span {
+    margin: auto;
+  }
+
+  button {
+    margin: 5px 5px !important;
+  }
+
+  .quote-item {
+    min-width: auto;
+    width: 90%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .pagedivider {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .leftside,
+  .rightside {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .quote-container {
+    margin: 0;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  .form-container {
+    min-width: auto;
+    width: 90%;
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  form input,
+  form select,
+  input,
+  form button {
+    max-width: 100%;
+  }
+
+  select,
+  input {
+    text-align: left;
+  }
+
+  button {
+    max-width: 150px !important;
+  }
+
+  input, select {
+    max-width: 250px !important;
+  }
+
+  .quote-container {
+    padding-right: 0 !important;
+    margin: 0;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    min-height: 400px;
+  }
+
+  p, .blockquote {
+    margin: auto !important;
+    padding: 10px !important;
+  }
+
+  .form-group.form-radio-group {
+    gap: 1rem;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  nav li {
+    margin: 5px 5px;
+  }
+  .logos {
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .status-message {
+    width: 90%;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .quotecontainer > blockquote {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  blockquote#quotecontainer {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h2 {
+    margin-top: 30px !important;
+  }
 }
